@@ -1,17 +1,17 @@
 import java.io.*;
 import java.util.*;
 
-class Project{
+class Assignment{
     String type;
-    int bno;
+    int buildingNo;
     int globaltime;
     int total_time;
     int b1,b2;
-    Project(int gt,String command,int b,int t){//insert
+    Assignment(int gt,String command,int b,int t){//insert
         globaltime=gt;
         if(command.equalsIgnoreCase("Insert")){
         type=command;
-        bno=b;
+        buildingNo=b;
         total_time=t;
     }
     else{
@@ -51,7 +51,7 @@ class WayneEnterprise{
    
    static int globalTime=0;
 	public static void main(String [] args) throws FileNotFoundException{
-         Queue<Project> construct=new LinkedList<>();
+         Queue<Assignment> construct=new LinkedList<>();
         RBT bst = new RBT();
         Heap h=new Heap();
     
@@ -89,7 +89,7 @@ class WayneEnterprise{
                         
                         totalT = contentLine.substring(commaindex+1,closeindex);
                         
-                         Project new_proj=new Project(Integer.valueOf(gt),"Insert",Integer.valueOf(builnum),Integer.valueOf(totalT));
+                         Assignment new_proj=new Assignment(Integer.valueOf(gt),"Insert",Integer.valueOf(builnum),Integer.valueOf(totalT));
                          construct.add(new_proj);
                         
                     }
@@ -99,7 +99,7 @@ class WayneEnterprise{
                             builnum1 = contentLine.substring(i+1,commaindex);
                          
                             builnum2 = contentLine.substring(commaindex+1,closeindex);
-                            Project new_proj=new Project(Integer.valueOf(gt),"Print",Integer.valueOf(builnum1),Integer.valueOf(builnum2));
+                            Assignment new_proj=new Assignment(Integer.valueOf(gt),"Print",Integer.valueOf(builnum1),Integer.valueOf(builnum2));
                             construct.add(new_proj);
                             
                         }
@@ -107,7 +107,7 @@ class WayneEnterprise{
                         {
                             builnum = contentLine.substring(i+1,closeindex);
                             //bw.write(" BuildingID " + builnum);
-                             Project new_proj=new Project(Integer.valueOf(gt),"Print",Integer.valueOf(builnum),-1);
+                             Assignment new_proj=new Assignment(Integer.valueOf(gt),"Print",Integer.valueOf(builnum),-1);
                             construct.add(new_proj);
                         }
                     }
@@ -137,8 +137,8 @@ class WayneEnterprise{
                 System.out.println("Error in closing the BufferedReader");
            }
         }
-       Project in=construct.poll();
-        Node x=new Node(in.bno,in.total_time);
+       Assignment in=construct.poll();
+        Node x=new Node(in.buildingNo,in.total_time);
         globalTime=0;
         x.exec_time=0;
         h.insert(x);
@@ -148,7 +148,7 @@ class WayneEnterprise{
 
 }
 
-    static void startConstruction(Queue<Project> construct,RBT bst,Heap h){
+    static void startConstruction(Queue<Assignment> construct,RBT bst,Heap h){
         Queue<Node> wait=new LinkedList<>();
         int upcomingProject=-1;
         
@@ -174,15 +174,15 @@ class WayneEnterprise{
                     if(globalTime==upcomingProject){
 
                  if(construct.peek().type.equalsIgnoreCase("Insert")){
-                  Project tp=construct.poll();
-                      Node bb=new Node(tp.bno,tp.total_time);
+                  Assignment tp=construct.poll();
+                      Node bb=new Node(tp.buildingNo,tp.total_time);
                       bb.exec_time=0;
                      bst.insert(bb);
                      wait.add(bb);
 
                 }
                   else{
-                       Project p = construct.poll();
+                       Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
                         if(p.b2==-1)
                           bst.print(p.b1);
@@ -206,15 +206,15 @@ class WayneEnterprise{
                     if(globalTime==upcomingProject){
 
                  if(construct.peek().type.equalsIgnoreCase("Insert")){
-                  Project tp=construct.poll();
-                      Node bb=new Node(tp.bno,tp.total_time);
+                  Assignment tp=construct.poll();
+                      Node bb=new Node(tp.buildingNo,tp.total_time);
                     bb.exec_time=1;
                      bst.insert(bb);
                      wait.add(bb);
 
                 }
                   else{
-                       Project p = construct.poll();
+                       Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
                         if(p.b2==-1)
                           bst.print(p.b1);
@@ -238,15 +238,15 @@ class WayneEnterprise{
                if(globalTime==upcomingProject){
 
                  if(construct.peek().type.equalsIgnoreCase("Insert")){
-                  Project tp=construct.poll();
-                      Node bb=new Node(tp.bno,tp.total_time);
+                  Assignment tp=construct.poll();
+                      Node bb=new Node(tp.buildingNo,tp.total_time);
                      bb.exec_time=1;
                      bst.insert(bb);
                      wait.add(bb);
 
                 }
                   else{
-                       Project p = construct.poll();
+                       Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
                         if(p.b2==-1)
                           bst.print(p.b1);
@@ -876,15 +876,15 @@ class RBT {
 
   // print the tree structure on the screen
   
-  void print(int bno){
+  void print(int buildingNo){
     Node cur=root;
     while(cur!=null){
-      if(cur.buildingno == bno){
+      if(cur.buildingno == buildingNo){
        System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
         System.out.println();
         return;
       }
-      else if(bno>cur.buildingno)
+      else if(buildingNo>cur.buildingno)
         cur=cur.right;
       else
         cur=cur.left;

@@ -2,6 +2,9 @@ import java.io.*;
 import java.util.*;
 
 //parentPointer -> parentPointer
+//left
+//rightPointer
+//color -> nodeColor
 
 class Assignment{
     String type;
@@ -36,8 +39,8 @@ class Node {
     int buildingNum; // holds the key
     Node parentPointer; // pointer to the parentPointer
     Node leftPointer; // pointer to leftPointer child
-    Node right; // pointer to right child
-    int color; // 1 . Red, 0 . Black
+    Node rightPointer; // pointer to rightPointer child
+    int nodeColor; // 1 . Red, 0 . Black
     int exec_time;
     int total_time;
     
@@ -45,7 +48,7 @@ class Node {
         buildingNum=key;
         total_time=tots;
         exec_time=0;
-        color=1;
+        nodeColor=1;
     }
     Node(){}
 }
@@ -537,70 +540,70 @@ class RBT {
   // fix the rb tree modified by the delete operation
   private void fixDelete(Node x) {
     Node s;
-    while (x != root && x.color == 0) {
+    while (x != root && x.nodeColor == 0) {
       if (x == x.parentPointer.leftPointer) {
-        s = x.parentPointer.right;
-        if (s.color == 1) {
+        s = x.parentPointer.rightPointer;
+        if (s.nodeColor == 1) {
           // case 3.1
-          s.color = 0;
-          x.parentPointer.color = 1;
+          s.nodeColor = 0;
+          x.parentPointer.nodeColor = 1;
           leftRotate(x.parentPointer);
-          s = x.parentPointer.right;
+          s = x.parentPointer.rightPointer;
         }
 
-        if (s.leftPointer.color == 0 && s.right.color == 0) {
+        if (s.leftPointer.nodeColor == 0 && s.rightPointer.nodeColor == 0) {
           // case 3.2
-          s.color = 1;
+          s.nodeColor = 1;
           x = x.parentPointer;
         } else {
-          if (s.right.color == 0) {
+          if (s.rightPointer.nodeColor == 0) {
             // case 3.3
-            s.leftPointer.color = 0;
-            s.color = 1;
+            s.leftPointer.nodeColor = 0;
+            s.nodeColor = 1;
             rightRotate(s);
-            s = x.parentPointer.right;
+            s = x.parentPointer.rightPointer;
           } 
 
           // case 3.4
-          s.color = x.parentPointer.color;
-          x.parentPointer.color = 0;
-          s.right.color = 0;
+          s.nodeColor = x.parentPointer.nodeColor;
+          x.parentPointer.nodeColor = 0;
+          s.rightPointer.nodeColor = 0;
           leftRotate(x.parentPointer);
           x = root;
         }
       } else {
         s = x.parentPointer.leftPointer;
-        if (s.color == 1) {
+        if (s.nodeColor == 1) {
           // case 3.1
-          s.color = 0;
-          x.parentPointer.color = 1;
+          s.nodeColor = 0;
+          x.parentPointer.nodeColor = 1;
           rightRotate(x.parentPointer);
           s = x.parentPointer.leftPointer;
         }
 
-        if (s.right.color == 0 && s.right.color == 0) {
+        if (s.rightPointer.nodeColor == 0 && s.rightPointer.nodeColor == 0) {
           // case 3.2
-          s.color = 1;
+          s.nodeColor = 1;
           x = x.parentPointer;
         } else {
-          if (s.leftPointer.color == 0) {
+          if (s.leftPointer.nodeColor == 0) {
             // case 3.3
-            s.right.color = 0;
-            s.color = 1;
+            s.rightPointer.nodeColor = 0;
+            s.nodeColor = 1;
             leftRotate(s);
             s = x.parentPointer.leftPointer;
           } 
 
           // case 3.4
-          s.color = x.parentPointer.color;
-          x.parentPointer.color = 0;
-          s.leftPointer.color = 0;
+          s.nodeColor = x.parentPointer.nodeColor;
+          x.parentPointer.nodeColor = 0;
+          s.leftPointer.nodeColor = 0;
           rightRotate(x.parentPointer);
           x = root;
         }
       } 
     }
-    x.color = 0;
+    x.nodeColor = 0;
   }
 
 
@@ -610,7 +613,7 @@ class RBT {
     } else if (u == u.parentPointer.leftPointer){
       u.parentPointer.leftPointer = v;
     } else {
-      u.parentPointer.right = v;
+      u.parentPointer.rightPointer = v;
     }
     v.parentPointer = u.parentPointer;
   }
@@ -626,7 +629,7 @@ class RBT {
       }
 
       if (node.buildingNum <key) {
-        node = node.right;
+        node = node.rightPointer;
       } else {
         node = node.leftPointer;
       }
@@ -638,30 +641,30 @@ class RBT {
     } 
 
     y = z;
-    int yOriginalColor = y.color;
+    int yOriginalColor = y.nodeColor;
     if (z.leftPointer == Ext) {
-      x = z.right;
-      rbTransplant(z, z.right);
-    } else if (z.right == Ext) {
+      x = z.rightPointer;
+      rbTransplant(z, z.rightPointer);
+    } else if (z.rightPointer == Ext) {
       x = z.leftPointer;
       rbTransplant(z, z.leftPointer);
     } 
     else {
-      y = minimum(z.right);
-      yOriginalColor = y.color;
-      x = y.right;
+      y = minimum(z.rightPointer);
+      yOriginalColor = y.nodeColor;
+      x = y.rightPointer;
       if (y.parentPointer == z) {
         x.parentPointer = y;
       } else {
-        rbTransplant(y, y.right);
-        y.right = z.right;
-        y.right.parentPointer = y;
+        rbTransplant(y, y.rightPointer);
+        y.rightPointer = z.rightPointer;
+        y.rightPointer.parentPointer = y;
       }
 
       rbTransplant(z, y);
       y.leftPointer = z.leftPointer;
       y.leftPointer.parentPointer = y;
-      y.color = z.color;
+      y.nodeColor = z.nodeColor;
     }
     if (yOriginalColor == 0){
       fixDelete(x);
@@ -673,14 +676,14 @@ class RBT {
   // fix the red-black tree
   private void fixInsert(Node k){
     Node u;
-    while (k.parentPointer.color == 1) {
-      if (k.parentPointer == k.parentPointer.parentPointer.right) {
+    while (k.parentPointer.nodeColor == 1) {
+      if (k.parentPointer == k.parentPointer.parentPointer.rightPointer) {
         u = k.parentPointer.parentPointer.leftPointer; // uncle
-        if (u.color == 1) {
+        if (u.nodeColor == 1) {
           // case 3.1
-          u.color = 0;
-          k.parentPointer.color = 0;
-          k.parentPointer.parentPointer.color = 1;
+          u.nodeColor = 0;
+          k.parentPointer.nodeColor = 0;
+          k.parentPointer.parentPointer.nodeColor = 1;
           k = k.parentPointer.parentPointer;
         } else {
           if (k == k.parentPointer.leftPointer) {
@@ -689,28 +692,28 @@ class RBT {
             rightRotate(k);
           }
           // case 3.2.1
-          k.parentPointer.color = 0;
-          k.parentPointer.parentPointer.color = 1;
+          k.parentPointer.nodeColor = 0;
+          k.parentPointer.parentPointer.nodeColor = 1;
           leftRotate(k.parentPointer.parentPointer);
         }
       } else {
-        u = k.parentPointer.parentPointer.right; // uncle
+        u = k.parentPointer.parentPointer.rightPointer; // uncle
 
-        if (u.color == 1) {
+        if (u.nodeColor == 1) {
           // mirror case 3.1
-          u.color = 0;
-          k.parentPointer.color = 0;
-          k.parentPointer.parentPointer.color = 1;
+          u.nodeColor = 0;
+          k.parentPointer.nodeColor = 0;
+          k.parentPointer.parentPointer.nodeColor = 1;
           k = k.parentPointer.parentPointer;  
         } else {
-          if (k == k.parentPointer.right) {
+          if (k == k.parentPointer.rightPointer) {
             // mirror case 3.2.2
             k = k.parentPointer;
             leftRotate(k);
           }
           // mirror case 3.2.1
-          k.parentPointer.color = 0;
-          k.parentPointer.parentPointer.color = 1;
+          k.parentPointer.nodeColor = 0;
+          k.parentPointer.parentPointer.nodeColor = 1;
           rightRotate(k.parentPointer.parentPointer);
         }
       }
@@ -718,7 +721,7 @@ class RBT {
         break;
       }
     }
-    root.color = 0;
+    root.nodeColor = 0;
   }
 
   private void printHelper(Node root, String indent, boolean last) {
@@ -733,10 +736,10 @@ class RBT {
           indent += "|    ";
        }
             
-           String sColor = root.color == 1?"RED":"BLACK";
+           String sColor = root.nodeColor == 1?"RED":"BLACK";
        System.out.println(root.buildingNum+" "+root.total_time+" "+root.exec_time + "(" + sColor + ")");
        printHelper(root.leftPointer, indent, false);
-       printHelper(root.right, indent, true);
+       printHelper(root.rightPointer, indent, true);
     }
   }
 
@@ -753,25 +756,25 @@ class RBT {
 
   // find the node with the maximum key
   public Node maximum(Node node) {
-    while (node.right != Ext) {
-      node = node.right;
+    while (node.rightPointer != Ext) {
+      node = node.rightPointer;
     }
     return node;
   }
 
   // find the successor of a given node
   public Node successor(Node x) {
-    // if the right subtree is not null,
+    // if the rightPointer subtree is not null,
     // the successor is the leftmost node in the
-    // right subtree
-    if (x.right != Ext) {
-      return minimum(x.right);
+    // rightPointer subtree
+    if (x.rightPointer != Ext) {
+      return minimum(x.rightPointer);
     }
 
     // else it is the lowest ancestor of x whose
     // leftPointer child is also an ancestor of x.
     Node y = x.parentPointer;
-    while (y != Ext && x == y.right) {
+    while (y != Ext && x == y.rightPointer) {
       x = y;
       y = y.parentPointer;
     }
@@ -783,8 +786,8 @@ class RBT {
 
   // rotate leftPointer at node x
   public void leftRotate(Node x) {
-    Node y = x.right;
-    x.right = y.leftPointer;
+    Node y = x.rightPointer;
+    x.rightPointer = y.leftPointer;
     if (y.leftPointer != Ext) {
       y.leftPointer.parentPointer = x;
     }
@@ -794,28 +797,28 @@ class RBT {
     } else if (x == x.parentPointer.leftPointer) {
       x.parentPointer.leftPointer = y;
     } else {
-      x.parentPointer.right = y;
+      x.parentPointer.rightPointer = y;
     }
     y.leftPointer = x;
     x.parentPointer = y;
   }
 
-  // rotate right at node x
+  // rotate rightPointer at node x
   public void rightRotate(Node x) {
     Node y = x.leftPointer;
-    x.leftPointer = y.right;
-    if (y.right != Ext) {
-      y.right.parentPointer = x;
+    x.leftPointer = y.rightPointer;
+    if (y.rightPointer != Ext) {
+      y.rightPointer.parentPointer = x;
     }
     y.parentPointer = x.parentPointer;
     if (x.parentPointer == null) {
       this.root = y;
-    } else if (x == x.parentPointer.right) {
-      x.parentPointer.right = y;
+    } else if (x == x.parentPointer.rightPointer) {
+      x.parentPointer.rightPointer = y;
     } else {
       x.parentPointer.leftPointer = y;
     }
-    y.right = x;
+    y.rightPointer = x;
     x.parentPointer = y;
   }
 
@@ -827,9 +830,9 @@ class RBT {
     
     node.exec_time=0;
     node.leftPointer=Ext;
-    node.right=Ext;
+    node.rightPointer=Ext;
     node.parentPointer=null;
-    node.color=1;
+    node.nodeColor=1;
     
      // new node must be red
 
@@ -841,7 +844,7 @@ class RBT {
       if (node.buildingNum < x.buildingNum) {
         x = x.leftPointer;
       } else {
-        x = x.right;
+        x = x.rightPointer;
       }
     }
 
@@ -852,12 +855,12 @@ class RBT {
     } else if (node.buildingNum < y.buildingNum) {
       y.leftPointer = node;
     } else {
-      y.right = node;
+      y.rightPointer = node;
     }
 
     // if new node is a root node, simply return
     if (node.parentPointer == null){
-      node.color = 0;
+      node.nodeColor = 0;
       return;
     }
 
@@ -888,7 +891,7 @@ class RBT {
         return;
       }
       else if(buildingNo>cur.buildingNum)
-        cur=cur.right;
+        cur=cur.rightPointer;
       else
         cur=cur.leftPointer;
     }
@@ -904,7 +907,7 @@ class RBT {
         return;
       }
       else if(cur.buildingNum<x){
-        cur=cur.right;
+        cur=cur.rightPointer;
       }
       else{
         cur=cur.leftPointer;
@@ -916,7 +919,7 @@ class RBT {
     if(cur==Ext ) return;
 
     if(cur.buildingNum==x){
-      recurPrint(cur.right,x,y);
+      recurPrint(cur.rightPointer,x,y);
       System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
     }
     else if(cur.buildingNum==y){
@@ -930,8 +933,8 @@ class RBT {
       recurPrint(cur.leftPointer,x,y);
       } 
       System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
-      if(cur.right!=Ext && inRange(cur.right.buildingNum,x,y))
-        recurPrint(cur.right,x,y);
+      if(cur.rightPointer!=Ext && inRange(cur.rightPointer.buildingNum,x,y))
+        recurPrint(cur.rightPointer,x,y);
     }
   }
 
@@ -944,9 +947,9 @@ class RBT {
   public RBT() {
     Ext = new Node();
     Ext.buildingNum=-1;
-    Ext.color = 0;
+    Ext.nodeColor = 0;
     Ext.leftPointer = null;
-    Ext.right = null;
+    Ext.rightPointer = null;
     root = Ext;
   }
 

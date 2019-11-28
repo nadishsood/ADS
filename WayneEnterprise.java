@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+
 class Project{
     String type;
     int bno;
@@ -362,20 +363,9 @@ class WayneEnterprise{
 
 
 
-import java.util.*;
-/*class Building{
-  int buildingno;
-  int exec_time;
-  int total_time;
 
-  public Building(int a,int b,int c){
-    buildingno=a;
-    exec_time=b;
-    total_time=c;
-  }
-}*/
 
-public class Heap extends WayneEnterprise {
+class Heap  {
      Node h[]=new Node[2000];
     // h[0]=new Building(-1,Integer.MIN_VALUE,0);
      Node dummy;
@@ -416,19 +406,17 @@ public class Heap extends WayneEnterprise {
         while(h[last].exec_time==h[parent(last)].exec_time){
           if(h[last].buildingno<h[parent(last)].buildingno)
           {
-               // System.out.println("he");
+               
             swap(last,parent(last));
                 last=parent(last);
-               // minheapify(last);
+              
           }
           else break;
         }
         minheapify(1); 
-        //print();
+      
     }
-   /* void put(int key,int total_time){
-        insert(new Node(key,0,total_time));
-    }*/
+ 
      void minheapify(int index)
     
     {
@@ -526,19 +514,11 @@ public class Heap extends WayneEnterprise {
                      minheapify(min_i);
                 }   
         }
-       /* if(ele.exec_time>min.exec_time)
-        {
-            swap(min_i,index);
-            minheapify(min_i);
-        }
-        else if(ele.exec_time==min.exec_time ){
-          if(ele.buildingno>min.buildingno){
-            swap(min_i,index);
-               minheapify(min_i);
-          }
-        } */
+       
 
     }
+
+
      boolean isRcThere(int p)
     {
         if((2*p+1)<cursize)
@@ -605,60 +585,15 @@ public class Heap extends WayneEnterprise {
 
         return r;
     }
-   /* public static void main(String args[])
-    {
-        Heap mh=new Heap();
-        Random rand=new Random();
-        int count=0;
-        while(count<15)
-        {
-            mh.insert(new Building(count+1,count+1,0));
-            count++;
-            mh.print();
-            System.out.println();
-        }
-       
-        mh.insert(new Building(17,5,2)); 
-        mh.print();
-        System.out.println();
-        Building r=mh.remove();
-        System.out.println("\nElement deleted:"+r.buildingno+" "+r.exec_time+" "+ r.total_time);
-        mh.insert(900);
-        mh.insert(10); 
-        mh.insert(84); 
-        mh.insert(19); 
-        mh.insert(6); 
-        mh.insert(22); 
-        mh.insert(9);
-        mh.insert(100);
-        mh.print();
-        System.out.println();
-        mh.insert(150);
-        mh.print();
-        System.out.println();
-        //System.out.println("\nElement deleted:"+remove());
-        
-        //System.out.println("\nElement deleted:"+remove());
-        
-        //System.out.println("\nElement deleted:"+remove());
-        
-        //System.out.println();
-        Building o=mh.remove();
-        System.out.println("\nElement deleted:"+o.buildingno+" "+o.exec_time+" "+ o.total_time);
-        mh.print();
-        System.out.println();
-        Building l=mh.remove();
-        System.out.println("\nElement deleted:"+l.buildingno+" "+l.exec_time+" "+ l.total_time);
-        mh.print();
-        System.out.println();
-         Building w=mh.remove();
-        System.out.println("\nElement deleted:"+w.buildingno+" "+w.exec_time+" "+ w.total_time);
-        System.out.println();
-        mh.print();
-    }*/
-                
-        
-    }
+}
+   
+
+
+
+
+
+
+
 
 //RBT
 //RBT
@@ -672,8 +607,7 @@ public class Heap extends WayneEnterprise {
 
 
 
-
-public class RBT {
+class RBT {
   private Node root;
   private Node Ext;
 
@@ -1102,10 +1036,6 @@ public class RBT {
 
   
 }
-
-
-
-
 
 
 

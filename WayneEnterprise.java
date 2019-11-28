@@ -6,24 +6,24 @@ class Assignment{
     int buildingNo;
     int globaltime;
     int total_time;
-    int b1,b2;
-    Assignment(int gt,String command,int b,int t){//insert
+    int x,y;
+    Assignment(int gt,String command,int a,int s){//insert
         globaltime=gt;
         if(command.equalsIgnoreCase("Insert")){
         type=command;
-        buildingNo=b;
-        total_time=t;
+        buildingNo=a;
+        total_time=s;
     }
     else{
-        if(t==-1){
+        if(s==-1){
             type=command;
-            b1=b;
-            b2=-1;
+            x=a;
+            y=-1;
         }
         else{
             type=command;
-            b1=b;
-            b2=t;
+            x=a;
+            y=s;
         }
     }
     }
@@ -184,10 +184,10 @@ class WayneEnterprise{
                   else{
                        Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
-                        if(p.b2==-1)
-                          bst.print(p.b1);
+                        if(p.y==-1)
+                          bst.print(p.x);
                         else
-                         bst.printRange(p.b1,p.b2);
+                         bst.printRange(p.x,p.y);
 
                         }
                 
@@ -216,10 +216,10 @@ class WayneEnterprise{
                   else{
                        Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
-                        if(p.b2==-1)
-                          bst.print(p.b1);
+                        if(p.y==-1)
+                          bst.print(p.x);
                         else
-                         bst.printRange(p.b1,p.b2);
+                         bst.printRange(p.x,p.y);
 
                         }
                 
@@ -248,10 +248,10 @@ class WayneEnterprise{
                   else{
                        Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
-                        if(p.b2==-1)
-                          bst.print(p.b1);
+                        if(p.y==-1)
+                          bst.print(p.x);
                         else
-                         bst.printRange(p.b1,p.b2);
+                         bst.printRange(p.x,p.y);
 
                         }
                 
@@ -891,16 +891,16 @@ class RBT {
     }
   }
 
-  void printRange(int b1,int b2)
+  void printRange(int x,int y)
   {
     Node cur=root;
     while(cur!=null){
-      if(cur.buildingno>=b1 && cur.buildingno<=b2){
-        recurPrint(cur,b1,b2);
+      if(cur.buildingno>=x && cur.buildingno<=y){
+        recurPrint(cur,x,y);
         System.out.println();
         return;
       }
-      else if(cur.buildingno<b1){
+      else if(cur.buildingno<x){
         cur=cur.right;
       }
       else{
@@ -909,26 +909,26 @@ class RBT {
     }
   }
 
-  void recurPrint(Node cur,int b1,int b2){
+  void recurPrint(Node cur,int x,int y){
     if(cur==Ext ) return;
 
-    if(cur.buildingno==b1){
-      recurPrint(cur.right,b1,b2);
+    if(cur.buildingno==x){
+      recurPrint(cur.right,x,y);
       System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
     }
-    else if(cur.buildingno==b2){
-      recurPrint(cur.left,b1,b2);
+    else if(cur.buildingno==y){
+      recurPrint(cur.left,x,y);
       System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
     
     }
     else
     {
-      if(cur.left!=Ext && inRange( cur.left.buildingno, b1,b2)){
-      recurPrint(cur.left,b1,b2);
+      if(cur.left!=Ext && inRange( cur.left.buildingno, x,y)){
+      recurPrint(cur.left,x,y);
       } 
       System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
-      if(cur.right!=Ext && inRange(cur.right.buildingno,b1,b2))
-        recurPrint(cur.right,b1,b2);
+      if(cur.right!=Ext && inRange(cur.right.buildingno,x,y))
+        recurPrint(cur.right,x,y);
     }
   }
 

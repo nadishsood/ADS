@@ -101,8 +101,7 @@ class WayneEnterprise{
                             builnum2 = contentLine.substring(commaindex+1,closeindex);
                             Project new_proj=new Project(Integer.valueOf(gt),"Print",Integer.valueOf(builnum1),Integer.valueOf(builnum2));
                             construct.add(new_proj);
-                            //bw.write("TotalTime " + totalT + "\n");
-                           // System.out.println("BuildingID2 " + builnum2 + "\n");
+                            
                         }
                         else //print one triplet
                         {
@@ -110,7 +109,6 @@ class WayneEnterprise{
                             //bw.write(" BuildingID " + builnum);
                              Project new_proj=new Project(Integer.valueOf(gt),"Print",Integer.valueOf(builnum),-1);
                             construct.add(new_proj);
-                           // System.out.println("BuildingID " + builnum);
                         }
                     }
                   
@@ -140,7 +138,6 @@ class WayneEnterprise{
            }
         }
        Project in=construct.poll();
-        //System.out.println(in.bno+" "+ in.total_time);
         Node x=new Node(in.bno,in.total_time);
         globalTime=0;
         x.exec_time=0;
@@ -230,13 +227,6 @@ class WayneEnterprise{
                 upcomingProject=construct.peek()!=null?construct.peek().globaltime: -1;
                
             }
-
-
-
-
-
-                  //---------------------------------------------------------
-
                 
                  
                    Over=true;
@@ -265,27 +255,12 @@ class WayneEnterprise{
 
                         }
                 
-                   // h.print();    
                 upcomingProject=construct.peek()!=null?construct.peek().globaltime: -1;
                
             }
 
 
-           // if(!Over){
-             // current.exec_time++;
-             // globalTime++;
-              
-          //}
-
-
-          //else{
-
-            //break;
-          //}
-          
-
-       // System.out.print(globalTime+" ");
-                   //System.out.println(current.buildingno+" "+current.exec_time+" "+current.total_time);
+           
                    
 
     }
@@ -299,56 +274,17 @@ class WayneEnterprise{
     {
         Node assigned = wait.poll();
        
-       // Node x=new Node(assigned.bno,assigned.total_time);
         h.insert(assigned);
-       // bst.insert(x);
     }
 
 
-    //globalTime++;
     
 }
-//globalTime++;
-//System.out.println("------------------------");
+
       h.print();
-   // System.out.println("------------------------");
 }
 
-
-
-        /*while(!construct.isEmpty()){
-           if(globalTime==construct.peek().globaltime){
-                    Project cur=construct.poll();
-
-                    if(cur.type.equalsIgnoreCase("Insert")){
-                         Node current=new Node(cur.bno,cur.total_time);
-                         h.insert(cur);
-                         bst.insert(cur);
-                     
-              
-
-
-
-                        
-
-                    }
-                    else{//print command
-                        if(cur.b2==-1){
-                            bst.print(cur.b1);
-                        }
-                        else{
-                            bst.printRange(cur.b1,cur.b2);
-                        }
-                    }
-                }
-
-            
-            //System.out.println("-----------");
-           //h.print();
-            //bst.prettyPrint();
-            globalTime++;
-        }*/
-    }
+}
 
 
 
@@ -367,7 +303,6 @@ class WayneEnterprise{
 
 class Heap  {
      Node h[]=new Node[2000];
-    // h[0]=new Building(-1,Integer.MIN_VALUE,0);
      Node dummy;
     
     int cursize;
@@ -381,26 +316,15 @@ class Heap  {
      void insert(Node key)
     
     {
-        /*if(h.size()==10)
-        {
-            if(h.get(0)<key)
-            {
-            remove(key);
-            return;
-            }
-            else
-                return;
-        }*/
+
         h[cursize++]=key;
         int last=cursize-1;
     
         //minheapify(1);
      while( h[last].exec_time < h[parent(last)].exec_time)
         {
-          //  System.out.println("he");
             swap(last,parent(last));
             last=parent(last);
-           // minheapify(last);
         }
 
         while(h[last].exec_time==h[parent(last)].exec_time){
@@ -444,14 +368,12 @@ class Heap  {
             else if(h[leftChild(index)].exec_time==h[(rightChild(index))].exec_time){
 
               if(h[leftChild(index)].buildingno<h[rightChild(index)].buildingno){
-                    //System.out.println("Dsffd");
                 min=h[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
             minheapify(min_i);
                 }
               else{
-                    //System.out.println("Dsfdsfdsffd");
                 min=h[rightChild(index)];
                     min_i=rightChild(index);
                     swap(min_i,index);
@@ -461,7 +383,6 @@ class Heap  {
         }
         else if(ele.exec_time==h[leftChild(index)].exec_time&&ele.exec_time==h[rightChild(index)].exec_time)
         {
-           // System.out.println("DSFSDFsdfdsdfdsfds");
                 if(h[leftChild(index)].buildingno<h[rightChild(index)].buildingno && ele.buildingno>h[leftChild(index)].buildingno){
                     min=h[leftChild(index)];
                      min_i=leftChild(index);
@@ -495,11 +416,7 @@ class Heap  {
         }
     }
 
-/*            else
-            {
-               min=h[rightChild(index)];
-                 min_i=rightChild(index);
-            } */
+
         else if(ele.exec_time>h[leftChild(index)].exec_time){
             min=h[leftChild(index)];
              min_i=leftChild(index);

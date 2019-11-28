@@ -10,6 +10,7 @@ import java.util.*;
 //h -> heap
 //bNumber
 //bNumber1
+//build
 
 class Assignment{
     String type;
@@ -62,7 +63,7 @@ class WayneEnterprise{
    
    static int globalTime=0;
 	public static void main(String [] args) throws FileNotFoundException{
-         Queue<Assignment> construct=new LinkedList<>();
+         Queue<Assignment> build=new LinkedList<>();
         RBT rbTree = new RBT();
         Heap heap=new Heap();
     
@@ -78,53 +79,52 @@ class WayneEnterprise{
            br = new BufferedReader(new FileReader(file));   
           
            
-            String contentLine = br.readLine();
+            String Line = br.readLine();
            ;
             String gTime = " ", command = " ", totalT = " ";
             String bNumber =" ", bNumber1 = " ", bNumber2 = " ";
-            while (contentLine != null) {
-                int gti = contentLine.indexOf(':');
-                int i = contentLine.indexOf('(');
-                int comma = contentLine.indexOf(',');
-                int close = contentLine.indexOf(')');
+            while (Line != null) {
+                int gti = Line.indexOf(':');
+                int i = Line.indexOf('(');
+                int comma = Line.indexOf(',');
+                int close = Line.indexOf(')');
                 if(i!=-1)
                 {
-                    gTime = contentLine.substring(0,gti);
+                    gTime = Line.substring(0,gti);
                   
-                    command = contentLine.substring(gti+2,i);
+                    command = Line.substring(gti+2,i);
           
                     if(command.equalsIgnoreCase("Insert"))
                     {
 
-                        bNumber = contentLine.substring(i+1,comma);
+                        bNumber = Line.substring(i+1,comma);
                         
-                        totalT = contentLine.substring(comma+1,close);
+                        totalT = Line.substring(comma+1,close);
                         
                          Assignment new_proj=new Assignment(Integer.valueOf(gTime),"Insert",Integer.valueOf(bNumber),Integer.valueOf(totalT));
-                         construct.add(new_proj);
+                         build.add(new_proj);
                         
                     }
                     else{//Print
                         if(comma!=-1) // 2 parameters (range)
                         {
-                            bNumber1 = contentLine.substring(i+1,comma);
+                            bNumber1 = Line.substring(i+1,comma);
                          
-                            bNumber2 = contentLine.substring(comma+1,close);
+                            bNumber2 = Line.substring(comma+1,close);
                             Assignment new_proj=new Assignment(Integer.valueOf(gTime),"Print",Integer.valueOf(bNumber1),Integer.valueOf(bNumber2));
-                            construct.add(new_proj);
+                            build.add(new_proj);
                             
                         }
                         else //print one triplet
                         {
-                            bNumber = contentLine.substring(i+1,close);
-                            //bw.write(" BuildingID " + bNumber);
+                            bNumber = Line.substring(i+1,close);
                              Assignment new_proj=new Assignment(Integer.valueOf(gTime),"Print",Integer.valueOf(bNumber),-1);
-                            construct.add(new_proj);
+                            build.add(new_proj);
                         }
                     }
                   
                 }
-                contentLine = br.readLine();
+                Line = br.readLine();
             }
        } 
        catch (IOException ioe) 
@@ -148,18 +148,18 @@ class WayneEnterprise{
                 System.out.println("Error in closing the BufferedReader");
            }
         }
-       Assignment in=construct.poll();
+       Assignment in=build.poll();
         Node x=new Node(in.buildingNo,in.total_time);
         globalTime=0;
         x.execution_time=0;
         heap.insert(x);
         rbTree.insert(x);
         
-      startConstruction(construct,rbTree,heap);
+      startConstruction(build,rbTree,heap);
 
 }
 
-    static void startConstruction(Queue<Assignment> construct,RBT rbTree,Heap heap){
+    static void startConstruction(Queue<Assignment> build,RBT rbTree,Heap heap){
         Queue<Node> wait=new LinkedList<>();
         int upcomingProject=-1;
         
@@ -167,8 +167,8 @@ class WayneEnterprise{
          while(heap.heap[1]!=null){
           
             Node current=heap.heap[1];
-            if(!construct.isEmpty())
-                upcomingProject=construct.peek().globaltime;
+            if(!build.isEmpty())
+                upcomingProject=build.peek().globaltime;
 
             boolean Over=false;
             for(int i=0;i<5;i++){
@@ -184,8 +184,8 @@ class WayneEnterprise{
                 {
                     if(globalTime==upcomingProject){
 
-                 if(construct.peek().type.equalsIgnoreCase("Insert")){
-                  Assignment tp=construct.poll();
+                 if(build.peek().type.equalsIgnoreCase("Insert")){
+                  Assignment tp=build.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
                       bb.execution_time=0;
                      rbTree.insert(bb);
@@ -193,7 +193,7 @@ class WayneEnterprise{
 
                 }
                   else{
-                       Assignment p = construct.poll();
+                       Assignment p = build.poll();
                        System.out.print(globalTime+" ");
                         if(p.y==-1)
                           rbTree.print(p.x);
@@ -203,7 +203,7 @@ class WayneEnterprise{
                         }
                 
                     
-                upcomingProject=construct.peek()!=null?construct.peek().globaltime: -1;
+                upcomingProject=build.peek()!=null?build.peek().globaltime: -1;
                
             }
                   
@@ -216,8 +216,8 @@ class WayneEnterprise{
 
                     if(globalTime==upcomingProject){
 
-                 if(construct.peek().type.equalsIgnoreCase("Insert")){
-                  Assignment tp=construct.poll();
+                 if(build.peek().type.equalsIgnoreCase("Insert")){
+                  Assignment tp=build.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
                     bb.execution_time=1;
                      rbTree.insert(bb);
@@ -225,7 +225,7 @@ class WayneEnterprise{
 
                 }
                   else{
-                       Assignment p = construct.poll();
+                       Assignment p = build.poll();
                        System.out.print(globalTime+" ");
                         if(p.y==-1)
                           rbTree.print(p.x);
@@ -235,7 +235,7 @@ class WayneEnterprise{
                         }
                 
                         
-                upcomingProject=construct.peek()!=null?construct.peek().globaltime: -1;
+                upcomingProject=build.peek()!=null?build.peek().globaltime: -1;
                
             }
                 
@@ -248,8 +248,8 @@ class WayneEnterprise{
 
                if(globalTime==upcomingProject){
 
-                 if(construct.peek().type.equalsIgnoreCase("Insert")){
-                  Assignment tp=construct.poll();
+                 if(build.peek().type.equalsIgnoreCase("Insert")){
+                  Assignment tp=build.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
                      bb.execution_time=1;
                      rbTree.insert(bb);
@@ -257,7 +257,7 @@ class WayneEnterprise{
 
                 }
                   else{
-                       Assignment p = construct.poll();
+                       Assignment p = build.poll();
                        System.out.print(globalTime+" ");
                         if(p.y==-1)
                           rbTree.print(p.x);
@@ -266,7 +266,7 @@ class WayneEnterprise{
 
                         }
                 
-                upcomingProject=construct.peek()!=null?construct.peek().globaltime: -1;
+                upcomingProject=build.peek()!=null?build.peek().globaltime: -1;
                
             }
 

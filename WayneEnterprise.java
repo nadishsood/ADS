@@ -30,7 +30,7 @@ class Assignment{
 }
 
 class Node {
-    int buildingno; // holds the key
+    int buildingNum; // holds the key
     Node parent; // pointer to the parent
     Node left; // pointer to left child
     Node right; // pointer to right child
@@ -39,7 +39,7 @@ class Node {
     int total_time;
     
     Node(int key,int tots){
-        buildingno=key;
+        buildingNum=key;
         total_time=tots;
         exec_time=0;
         color=1;
@@ -196,10 +196,10 @@ class WayneEnterprise{
                
             }
                   
-                    System.out.println(current.buildingno+" "+ globalTime);
+                    System.out.println(current.buildingNum+" "+ globalTime);
 
                  
-                  bst.deleteNode(current.buildingno);
+                  bst.deleteNode(current.buildingNum);
                   h.remove();
                 
 
@@ -328,7 +328,7 @@ class Heap  {
         }
 
         while(h[last].exec_time==h[parent(last)].exec_time){
-          if(h[last].buildingno<h[parent(last)].buildingno)
+          if(h[last].buildingNum<h[parent(last)].buildingNum)
           {
                
             swap(last,parent(last));
@@ -367,7 +367,7 @@ class Heap  {
 
             else if(h[leftChild(index)].exec_time==h[(rightChild(index))].exec_time){
 
-              if(h[leftChild(index)].buildingno<h[rightChild(index)].buildingno){
+              if(h[leftChild(index)].buildingNum<h[rightChild(index)].buildingNum){
                 min=h[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
@@ -383,13 +383,13 @@ class Heap  {
         }
         else if(ele.exec_time==h[leftChild(index)].exec_time&&ele.exec_time==h[rightChild(index)].exec_time)
         {
-                if(h[leftChild(index)].buildingno<h[rightChild(index)].buildingno && ele.buildingno>h[leftChild(index)].buildingno){
+                if(h[leftChild(index)].buildingNum<h[rightChild(index)].buildingNum && ele.buildingNum>h[leftChild(index)].buildingNum){
                     min=h[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
             minheapify(min_i);
                 }
-                else if(h[leftChild(index)].buildingno>h[rightChild(index)].buildingno && ele.buildingno>h[rightChild(index)].buildingno){
+                else if(h[leftChild(index)].buildingNum>h[rightChild(index)].buildingNum && ele.buildingNum>h[rightChild(index)].buildingNum){
                     min=h[rightChild(index)];
                     min_i=rightChild(index);
                     swap(min_i,index);
@@ -398,7 +398,7 @@ class Heap  {
         }
         else if(ele.exec_time==h[leftChild(index)].exec_time)
         {
-                if(ele.buildingno>h[leftChild(index)].buildingno){
+                if(ele.buildingNum>h[leftChild(index)].buildingNum){
                     min=h[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
@@ -407,7 +407,7 @@ class Heap  {
         }
         else if(ele.exec_time==h[rightChild(index)].exec_time)
         {
-                if(ele.buildingno>h[rightChild(index)].buildingno){
+                if(ele.buildingNum>h[rightChild(index)].buildingNum){
                     min=h[rightChild(index)];
                      min_i=rightChild(index);
                      swap(min_i,index);
@@ -424,7 +424,7 @@ class Heap  {
             minheapify(min_i);
         }
         else if(ele.exec_time==h[leftChild(index)].exec_time){
-            if(ele.buildingno>h[leftChild(index)].buildingno){
+            if(ele.buildingNum>h[leftChild(index)].buildingNum){
                     min=h[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
@@ -480,7 +480,7 @@ class Heap  {
         System.out.println("***********************************************");
         for(int i=1;i<cursize;i++){
             Node x=h[i];
-            System.out.println(x.buildingno+" "+ x.exec_time+" "+ x.total_time);
+            System.out.println(x.buildingNum+" "+ x.exec_time+" "+ x.total_time);
         }
         System.out.println("***********************************");
     }
@@ -618,11 +618,11 @@ class RBT {
     Node x, y;
     while (node != Ext){
       //System.out.println("hey");
-      if (node.buildingno == key) {
+      if (node.buildingNum == key) {
         z = node;
       }
 
-      if (node.buildingno <key) {
+      if (node.buildingNum <key) {
         node = node.right;
       } else {
         node = node.left;
@@ -731,7 +731,7 @@ class RBT {
        }
             
            String sColor = root.color == 1?"RED":"BLACK";
-       System.out.println(root.buildingno+" "+root.total_time+" "+root.exec_time + "(" + sColor + ")");
+       System.out.println(root.buildingNum+" "+root.total_time+" "+root.exec_time + "(" + sColor + ")");
        printHelper(root.left, indent, false);
        printHelper(root.right, indent, true);
     }
@@ -835,7 +835,7 @@ class RBT {
 
     while (x != Ext) {
       y = x;
-      if (node.buildingno < x.buildingno) {
+      if (node.buildingNum < x.buildingNum) {
         x = x.left;
       } else {
         x = x.right;
@@ -846,7 +846,7 @@ class RBT {
     node.parent = y;
     if (y == null) {
       root = node;
-    } else if (node.buildingno < y.buildingno) {
+    } else if (node.buildingNum < y.buildingNum) {
       y.left = node;
     } else {
       y.right = node;
@@ -870,8 +870,8 @@ class RBT {
   
 
   // delete the node from the tree
-  public void deleteNode(int buildingno) {
-    deleteNodeUtil(this.root, buildingno);
+  public void deleteNode(int buildingNum) {
+    deleteNodeUtil(this.root, buildingNum);
   }
 
   // print the tree structure on the screen
@@ -879,12 +879,12 @@ class RBT {
   void print(int buildingNo){
     Node cur=root;
     while(cur!=null){
-      if(cur.buildingno == buildingNo){
-       System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
+      if(cur.buildingNum == buildingNo){
+       System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
         System.out.println();
         return;
       }
-      else if(buildingNo>cur.buildingno)
+      else if(buildingNo>cur.buildingNum)
         cur=cur.right;
       else
         cur=cur.left;
@@ -895,12 +895,12 @@ class RBT {
   {
     Node cur=root;
     while(cur!=null){
-      if(cur.buildingno>=x && cur.buildingno<=y){
+      if(cur.buildingNum>=x && cur.buildingNum<=y){
         recurPrint(cur,x,y);
         System.out.println();
         return;
       }
-      else if(cur.buildingno<x){
+      else if(cur.buildingNum<x){
         cur=cur.right;
       }
       else{
@@ -912,22 +912,22 @@ class RBT {
   void recurPrint(Node cur,int x,int y){
     if(cur==Ext ) return;
 
-    if(cur.buildingno==x){
+    if(cur.buildingNum==x){
       recurPrint(cur.right,x,y);
-      System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
+      System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
     }
-    else if(cur.buildingno==y){
+    else if(cur.buildingNum==y){
       recurPrint(cur.left,x,y);
-      System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
+      System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
     
     }
     else
     {
-      if(cur.left!=Ext && inRange( cur.left.buildingno, x,y)){
+      if(cur.left!=Ext && inRange( cur.left.buildingNum, x,y)){
       recurPrint(cur.left,x,y);
       } 
-      System.out.print("("+cur.buildingno+" "+ cur.exec_time+" "+ cur.total_time+") ");
-      if(cur.right!=Ext && inRange(cur.right.buildingno,x,y))
+      System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
+      if(cur.right!=Ext && inRange(cur.right.buildingNum,x,y))
         recurPrint(cur.right,x,y);
     }
   }
@@ -940,7 +940,7 @@ class RBT {
 
   public RBT() {
     Ext = new Node();
-    Ext.buildingno=-1;
+    Ext.buildingNum=-1;
     Ext.color = 0;
     Ext.left = null;
     Ext.right = null;

@@ -5,6 +5,7 @@ import java.util.*;
 //left
 //rightPointer
 //color -> nodeColor
+//exectime -> execution_time
 
 class Assignment{
     String type;
@@ -58,7 +59,7 @@ class WayneEnterprise{
    static int globalTime=0;
 	public static void main(String [] args) throws FileNotFoundException{
          Queue<Assignment> construct=new LinkedList<>();
-        RBT bst = new RBT();
+        RBT rbTree = new RBT();
         Heap h=new Heap();
     
         BufferedReader br = null;
@@ -148,13 +149,13 @@ class WayneEnterprise{
         globalTime=0;
         x.execution_time=0;
         h.insert(x);
-        bst.insert(x);
+        rbTree.insert(x);
         
-      startConstruction(construct,bst,h);
+      startConstruction(construct,rbTree,h);
 
 }
 
-    static void startConstruction(Queue<Assignment> construct,RBT bst,Heap h){
+    static void startConstruction(Queue<Assignment> construct,RBT rbTree,Heap h){
         Queue<Node> wait=new LinkedList<>();
         int upcomingProject=-1;
         
@@ -183,7 +184,7 @@ class WayneEnterprise{
                   Assignment tp=construct.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
                       bb.execution_time=0;
-                     bst.insert(bb);
+                     rbTree.insert(bb);
                      wait.add(bb);
 
                 }
@@ -191,9 +192,9 @@ class WayneEnterprise{
                        Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
                         if(p.y==-1)
-                          bst.print(p.x);
+                          rbTree.print(p.x);
                         else
-                         bst.printRange(p.x,p.y);
+                         rbTree.printRange(p.x,p.y);
 
                         }
                 
@@ -205,7 +206,7 @@ class WayneEnterprise{
                     System.out.println(current.buildingNum+" "+ globalTime);
 
                  
-                  bst.deleteNode(current.buildingNum);
+                  rbTree.deleteNode(current.buildingNum);
                   h.remove();
                 
 
@@ -215,7 +216,7 @@ class WayneEnterprise{
                   Assignment tp=construct.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
                     bb.execution_time=1;
-                     bst.insert(bb);
+                     rbTree.insert(bb);
                      wait.add(bb);
 
                 }
@@ -223,9 +224,9 @@ class WayneEnterprise{
                        Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
                         if(p.y==-1)
-                          bst.print(p.x);
+                          rbTree.print(p.x);
                         else
-                         bst.printRange(p.x,p.y);
+                         rbTree.printRange(p.x,p.y);
 
                         }
                 
@@ -247,7 +248,7 @@ class WayneEnterprise{
                   Assignment tp=construct.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
                      bb.execution_time=1;
-                     bst.insert(bb);
+                     rbTree.insert(bb);
                      wait.add(bb);
 
                 }
@@ -255,9 +256,9 @@ class WayneEnterprise{
                        Assignment p = construct.poll();
                        System.out.print(globalTime+" ");
                         if(p.y==-1)
-                          bst.print(p.x);
+                          rbTree.print(p.x);
                         else
-                         bst.printRange(p.x,p.y);
+                         rbTree.printRange(p.x,p.y);
 
                         }
                 

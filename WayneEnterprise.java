@@ -6,6 +6,8 @@ import java.util.*;
 //rightPointer
 //color -> nodeColor
 //exectime -> execution_time
+//bst -> rbTree
+//h -> heap
 
 class Assignment{
     String type;
@@ -60,7 +62,7 @@ class WayneEnterprise{
 	public static void main(String [] args) throws FileNotFoundException{
          Queue<Assignment> construct=new LinkedList<>();
         RBT rbTree = new RBT();
-        Heap h=new Heap();
+        Heap heap=new Heap();
     
         BufferedReader br = null;
         BufferedWriter bw = null;
@@ -81,8 +83,8 @@ class WayneEnterprise{
             while (contentLine != null) {
                 int gti = contentLine.indexOf(':');
                 int i = contentLine.indexOf('(');
-                int commaindex = contentLine.indexOf(',');
-                int closeindex = contentLine.indexOf(')');
+                int comma = contentLine.indexOf(',');
+                int close = contentLine.indexOf(')');
                 if(i!=-1)
                 {
                     gt = contentLine.substring(0,gti);
@@ -92,27 +94,27 @@ class WayneEnterprise{
                     if(command.equalsIgnoreCase("Insert"))
                     {
 
-                        builnum = contentLine.substring(i+1,commaindex);
+                        builnum = contentLine.substring(i+1,comma);
                         
-                        totalT = contentLine.substring(commaindex+1,closeindex);
+                        totalT = contentLine.substring(comma+1,close);
                         
                          Assignment new_proj=new Assignment(Integer.valueOf(gt),"Insert",Integer.valueOf(builnum),Integer.valueOf(totalT));
                          construct.add(new_proj);
                         
                     }
                     else{//Print
-                        if(commaindex!=-1) // 2 parameters (range)
+                        if(comma!=-1) // 2 parameters (range)
                         {
-                            builnum1 = contentLine.substring(i+1,commaindex);
+                            builnum1 = contentLine.substring(i+1,comma);
                          
-                            builnum2 = contentLine.substring(commaindex+1,closeindex);
+                            builnum2 = contentLine.substring(comma+1,close);
                             Assignment new_proj=new Assignment(Integer.valueOf(gt),"Print",Integer.valueOf(builnum1),Integer.valueOf(builnum2));
                             construct.add(new_proj);
                             
                         }
                         else //print one triplet
                         {
-                            builnum = contentLine.substring(i+1,closeindex);
+                            builnum = contentLine.substring(i+1,close);
                             //bw.write(" BuildingID " + builnum);
                              Assignment new_proj=new Assignment(Integer.valueOf(gt),"Print",Integer.valueOf(builnum),-1);
                             construct.add(new_proj);
@@ -148,21 +150,21 @@ class WayneEnterprise{
         Node x=new Node(in.buildingNo,in.total_time);
         globalTime=0;
         x.execution_time=0;
-        h.insert(x);
+        heap.insert(x);
         rbTree.insert(x);
         
-      startConstruction(construct,rbTree,h);
+      startConstruction(construct,rbTree,heap);
 
 }
 
-    static void startConstruction(Queue<Assignment> construct,RBT rbTree,Heap h){
+    static void startConstruction(Queue<Assignment> construct,RBT rbTree,Heap heap){
         Queue<Node> wait=new LinkedList<>();
         int upcomingProject=-1;
         
    
-         while(h.h[1]!=null){
+         while(heap.heap[1]!=null){
           
-            Node current=h.h[1];
+            Node current=heap.heap[1];
             if(!construct.isEmpty())
                 upcomingProject=construct.peek().globaltime;
 
@@ -207,7 +209,7 @@ class WayneEnterprise{
 
                  
                   rbTree.deleteNode(current.buildingNum);
-                  h.remove();
+                  heap.remove();
                 
 
                     if(globalTime==upcomingProject){
@@ -272,8 +274,8 @@ class WayneEnterprise{
 
     }
     if(!Over){
-       h.remove();
-       h.insert(current);
+       heap.remove();
+       heap.insert(current);
     }
     
 
@@ -281,14 +283,14 @@ class WayneEnterprise{
     {
         Node assigned = wait.poll();
        
-        h.insert(assigned);
+        heap.insert(assigned);
     }
 
 
     
 }
 
-      h.print();
+      heap.print();
 }
 
 }
@@ -309,14 +311,14 @@ class WayneEnterprise{
 
 
 class Heap  {
-     Node h[]=new Node[2000];
+     Node heap[]=new Node[2000];
      Node dummy;
     
     int cursize;
     Heap(){
       dummy=new Node(Integer.MIN_VALUE,Integer.MIN_VALUE);
-      h[0] = dummy;
-      h[0].execution_time= -1;
+      heap[0] = dummy;
+      heap[0].execution_time= -1;
       cursize=1;
 
     }
@@ -324,18 +326,18 @@ class Heap  {
     
     {
 
-        h[cursize++]=key;
+        heap[cursize++]=key;
         int last=cursize-1;
     
         //minheapify(1);
-     while( h[last].execution_time < h[parentPointer(last)].execution_time)
+     while( heap[last].execution_time < heap[parentPointer(last)].execution_time)
         {
             swap(last,parentPointer(last));
             last=parentPointer(last);
         }
 
-        while(h[last].execution_time==h[parentPointer(last)].execution_time){
-          if(h[last].buildingNum<h[parentPointer(last)].buildingNum)
+        while(heap[last].execution_time==heap[parentPointer(last)].execution_time){
+          if(heap[last].buildingNum<heap[parentPointer(last)].buildingNum)
           {
                
             swap(last,parentPointer(last));
@@ -351,71 +353,71 @@ class Heap  {
      void minheapify(int index)
     
     {
-        Node ele=h[index];
+        Node ele=heap[index];
         Node min;
         int min_i=0;
         if(isLeaf(index))
             return;
         if(isRcThere(index)){
-            if(ele.execution_time>h[leftChild(index)].execution_time||ele.execution_time>h[rightChild(index)].execution_time){
-            if(h[leftChild(index)].execution_time<h[rightChild(index)].execution_time){
-              min=h[leftChild(index)];
+            if(ele.execution_time>heap[leftChild(index)].execution_time||ele.execution_time>heap[rightChild(index)].execution_time){
+            if(heap[leftChild(index)].execution_time<heap[rightChild(index)].execution_time){
+              min=heap[leftChild(index)];
                 min_i=leftChild(index);
                 swap(min_i,index);
                 minheapify(min_i);
             }
-            else if(h[leftChild(index)].execution_time>h[rightChild(index)].execution_time){
-                min=h[rightChild(index)];
+            else if(heap[leftChild(index)].execution_time>heap[rightChild(index)].execution_time){
+                min=heap[rightChild(index)];
                 min_i=rightChild(index);
                 swap(min_i,index);
                 minheapify(min_i); 
             }
 
 
-            else if(h[leftChild(index)].execution_time==h[(rightChild(index))].execution_time){
+            else if(heap[leftChild(index)].execution_time==heap[(rightChild(index))].execution_time){
 
-              if(h[leftChild(index)].buildingNum<h[rightChild(index)].buildingNum){
-                min=h[leftChild(index)];
+              if(heap[leftChild(index)].buildingNum<heap[rightChild(index)].buildingNum){
+                min=heap[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
             minheapify(min_i);
                 }
               else{
-                min=h[rightChild(index)];
+                min=heap[rightChild(index)];
                     min_i=rightChild(index);
                     swap(min_i,index);
             minheapify(min_i);
                 }
             }
         }
-        else if(ele.execution_time==h[leftChild(index)].execution_time&&ele.execution_time==h[rightChild(index)].execution_time)
+        else if(ele.execution_time==heap[leftChild(index)].execution_time&&ele.execution_time==heap[rightChild(index)].execution_time)
         {
-                if(h[leftChild(index)].buildingNum<h[rightChild(index)].buildingNum && ele.buildingNum>h[leftChild(index)].buildingNum){
-                    min=h[leftChild(index)];
+                if(heap[leftChild(index)].buildingNum<heap[rightChild(index)].buildingNum && ele.buildingNum>heap[leftChild(index)].buildingNum){
+                    min=heap[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
             minheapify(min_i);
                 }
-                else if(h[leftChild(index)].buildingNum>h[rightChild(index)].buildingNum && ele.buildingNum>h[rightChild(index)].buildingNum){
-                    min=h[rightChild(index)];
+                else if(heap[leftChild(index)].buildingNum>heap[rightChild(index)].buildingNum && ele.buildingNum>heap[rightChild(index)].buildingNum){
+                    min=heap[rightChild(index)];
                     min_i=rightChild(index);
                     swap(min_i,index);
             minheapify(min_i);
                 }
         }
-        else if(ele.execution_time==h[leftChild(index)].execution_time)
+        else if(ele.execution_time==heap[leftChild(index)].execution_time)
         {
-                if(ele.buildingNum>h[leftChild(index)].buildingNum){
-                    min=h[leftChild(index)];
+                if(ele.buildingNum>heap[leftChild(index)].buildingNum){
+                    min=heap[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
                      minheapify(min_i);
                 }
         }
-        else if(ele.execution_time==h[rightChild(index)].execution_time)
+        else if(ele.execution_time==heap[rightChild(index)].execution_time)
         {
-                if(ele.buildingNum>h[rightChild(index)].buildingNum){
-                    min=h[rightChild(index)];
+                if(ele.buildingNum>heap[rightChild(index)].buildingNum){
+                    min=heap[rightChild(index)];
                      min_i=rightChild(index);
                      swap(min_i,index);
             minheapify(min_i);
@@ -424,15 +426,15 @@ class Heap  {
     }
 
 
-        else if(ele.execution_time>h[leftChild(index)].execution_time){
-            min=h[leftChild(index)];
+        else if(ele.execution_time>heap[leftChild(index)].execution_time){
+            min=heap[leftChild(index)];
              min_i=leftChild(index);
              swap(min_i,index);
             minheapify(min_i);
         }
-        else if(ele.execution_time==h[leftChild(index)].execution_time){
-            if(ele.buildingNum>h[leftChild(index)].buildingNum){
-                    min=h[leftChild(index)];
+        else if(ele.execution_time==heap[leftChild(index)].execution_time){
+            if(ele.buildingNum>heap[leftChild(index)].buildingNum){
+                    min=heap[leftChild(index)];
                      min_i=leftChild(index);
                      swap(min_i,index);
                      minheapify(min_i);
@@ -477,16 +479,16 @@ class Heap  {
     }
      void swap(int child,int parentPointer)
     {
-        Node temp=h[child];
-        h[child]=h[parentPointer];
-        h[parentPointer]=temp;
+        Node temp=heap[child];
+        heap[child]=heap[parentPointer];
+        heap[parentPointer]=temp;
         
     }
      void print()
     {
         System.out.println("***********************************************");
         for(int i=1;i<cursize;i++){
-            Node x=h[i];
+            Node x=heap[i];
             System.out.println(x.buildingNum+" "+ x.execution_time+" "+ x.total_time);
         }
         System.out.println("***********************************");
@@ -494,15 +496,15 @@ class Heap  {
 
     Node remove()
     {
-        Node r=h[1];
+        Node r=heap[1];
 
         if(cursize>2){
-        h[1]=h[cursize-1];
+        heap[1]=heap[cursize-1];
         cursize--;
         minheapify(1);
     }
     else{
-      h[1]=null;
+      heap[1]=null;
       cursize=1;
     }
       
@@ -939,8 +941,8 @@ class RBT {
     }
   }
 
-  boolean inRange(int target,int l,int h){
-    if(target>=l && target<=h)
+  boolean inRange(int target,int l,int heap){
+    if(target>=l && target<=heap)
       return true;
     return false;
   }

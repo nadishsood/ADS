@@ -41,13 +41,13 @@ class Node {
     Node leftPointer; // pointer to leftPointer child
     Node rightPointer; // pointer to rightPointer child
     int nodeColor; // 1 . Red, 0 . Black
-    int exec_time;
+    int execution_time;
     int total_time;
     
     Node(int key,int tots){
         buildingNum=key;
         total_time=tots;
-        exec_time=0;
+        execution_time=0;
         nodeColor=1;
     }
     Node(){}
@@ -146,7 +146,7 @@ class WayneEnterprise{
        Assignment in=construct.poll();
         Node x=new Node(in.buildingNo,in.total_time);
         globalTime=0;
-        x.exec_time=0;
+        x.execution_time=0;
         h.insert(x);
         bst.insert(x);
         
@@ -169,20 +169,20 @@ class WayneEnterprise{
             for(int i=0;i<5;i++){
 
 
-                if(current.exec_time!=current.total_time)
+                if(current.execution_time!=current.total_time)
                 {
-                  current.exec_time++;
+                  current.execution_time++;
                   globalTime++;
                 }
 
-               if(current.exec_time==current.total_time)
+               if(current.execution_time==current.total_time)
                 {
                     if(globalTime==upcomingProject){
 
                  if(construct.peek().type.equalsIgnoreCase("Insert")){
                   Assignment tp=construct.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
-                      bb.exec_time=0;
+                      bb.execution_time=0;
                      bst.insert(bb);
                      wait.add(bb);
 
@@ -214,7 +214,7 @@ class WayneEnterprise{
                  if(construct.peek().type.equalsIgnoreCase("Insert")){
                   Assignment tp=construct.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
-                    bb.exec_time=1;
+                    bb.execution_time=1;
                      bst.insert(bb);
                      wait.add(bb);
 
@@ -246,7 +246,7 @@ class WayneEnterprise{
                  if(construct.peek().type.equalsIgnoreCase("Insert")){
                   Assignment tp=construct.poll();
                       Node bb=new Node(tp.buildingNo,tp.total_time);
-                     bb.exec_time=1;
+                     bb.execution_time=1;
                      bst.insert(bb);
                      wait.add(bb);
 
@@ -315,7 +315,7 @@ class Heap  {
     Heap(){
       dummy=new Node(Integer.MIN_VALUE,Integer.MIN_VALUE);
       h[0] = dummy;
-      h[0].exec_time= -1;
+      h[0].execution_time= -1;
       cursize=1;
 
     }
@@ -327,13 +327,13 @@ class Heap  {
         int last=cursize-1;
     
         //minheapify(1);
-     while( h[last].exec_time < h[parentPointer(last)].exec_time)
+     while( h[last].execution_time < h[parentPointer(last)].execution_time)
         {
             swap(last,parentPointer(last));
             last=parentPointer(last);
         }
 
-        while(h[last].exec_time==h[parentPointer(last)].exec_time){
+        while(h[last].execution_time==h[parentPointer(last)].execution_time){
           if(h[last].buildingNum<h[parentPointer(last)].buildingNum)
           {
                
@@ -356,14 +356,14 @@ class Heap  {
         if(isLeaf(index))
             return;
         if(isRcThere(index)){
-            if(ele.exec_time>h[leftChild(index)].exec_time||ele.exec_time>h[rightChild(index)].exec_time){
-            if(h[leftChild(index)].exec_time<h[rightChild(index)].exec_time){
+            if(ele.execution_time>h[leftChild(index)].execution_time||ele.execution_time>h[rightChild(index)].execution_time){
+            if(h[leftChild(index)].execution_time<h[rightChild(index)].execution_time){
               min=h[leftChild(index)];
                 min_i=leftChild(index);
                 swap(min_i,index);
                 minheapify(min_i);
             }
-            else if(h[leftChild(index)].exec_time>h[rightChild(index)].exec_time){
+            else if(h[leftChild(index)].execution_time>h[rightChild(index)].execution_time){
                 min=h[rightChild(index)];
                 min_i=rightChild(index);
                 swap(min_i,index);
@@ -371,7 +371,7 @@ class Heap  {
             }
 
 
-            else if(h[leftChild(index)].exec_time==h[(rightChild(index))].exec_time){
+            else if(h[leftChild(index)].execution_time==h[(rightChild(index))].execution_time){
 
               if(h[leftChild(index)].buildingNum<h[rightChild(index)].buildingNum){
                 min=h[leftChild(index)];
@@ -387,7 +387,7 @@ class Heap  {
                 }
             }
         }
-        else if(ele.exec_time==h[leftChild(index)].exec_time&&ele.exec_time==h[rightChild(index)].exec_time)
+        else if(ele.execution_time==h[leftChild(index)].execution_time&&ele.execution_time==h[rightChild(index)].execution_time)
         {
                 if(h[leftChild(index)].buildingNum<h[rightChild(index)].buildingNum && ele.buildingNum>h[leftChild(index)].buildingNum){
                     min=h[leftChild(index)];
@@ -402,7 +402,7 @@ class Heap  {
             minheapify(min_i);
                 }
         }
-        else if(ele.exec_time==h[leftChild(index)].exec_time)
+        else if(ele.execution_time==h[leftChild(index)].execution_time)
         {
                 if(ele.buildingNum>h[leftChild(index)].buildingNum){
                     min=h[leftChild(index)];
@@ -411,7 +411,7 @@ class Heap  {
                      minheapify(min_i);
                 }
         }
-        else if(ele.exec_time==h[rightChild(index)].exec_time)
+        else if(ele.execution_time==h[rightChild(index)].execution_time)
         {
                 if(ele.buildingNum>h[rightChild(index)].buildingNum){
                     min=h[rightChild(index)];
@@ -423,13 +423,13 @@ class Heap  {
     }
 
 
-        else if(ele.exec_time>h[leftChild(index)].exec_time){
+        else if(ele.execution_time>h[leftChild(index)].execution_time){
             min=h[leftChild(index)];
              min_i=leftChild(index);
              swap(min_i,index);
             minheapify(min_i);
         }
-        else if(ele.exec_time==h[leftChild(index)].exec_time){
+        else if(ele.execution_time==h[leftChild(index)].execution_time){
             if(ele.buildingNum>h[leftChild(index)].buildingNum){
                     min=h[leftChild(index)];
                      min_i=leftChild(index);
@@ -486,7 +486,7 @@ class Heap  {
         System.out.println("***********************************************");
         for(int i=1;i<cursize;i++){
             Node x=h[i];
-            System.out.println(x.buildingNum+" "+ x.exec_time+" "+ x.total_time);
+            System.out.println(x.buildingNum+" "+ x.execution_time+" "+ x.total_time);
         }
         System.out.println("***********************************");
     }
@@ -737,7 +737,7 @@ class RBT {
        }
             
            String sColor = root.nodeColor == 1?"RED":"BLACK";
-       System.out.println(root.buildingNum+" "+root.total_time+" "+root.exec_time + "(" + sColor + ")");
+       System.out.println(root.buildingNum+" "+root.total_time+" "+root.execution_time + "(" + sColor + ")");
        printHelper(root.leftPointer, indent, false);
        printHelper(root.rightPointer, indent, true);
     }
@@ -828,7 +828,7 @@ class RBT {
     // Ordinary Binary Search Insertion
     
     
-    node.exec_time=0;
+    node.execution_time=0;
     node.leftPointer=Ext;
     node.rightPointer=Ext;
     node.parentPointer=null;
@@ -886,7 +886,7 @@ class RBT {
     Node cur=root;
     while(cur!=null){
       if(cur.buildingNum == buildingNo){
-       System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
+       System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
         System.out.println();
         return;
       }
@@ -920,11 +920,11 @@ class RBT {
 
     if(cur.buildingNum==x){
       recurPrint(cur.rightPointer,x,y);
-      System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
+      System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
     }
     else if(cur.buildingNum==y){
       recurPrint(cur.leftPointer,x,y);
-      System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
+      System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
     
     }
     else
@@ -932,7 +932,7 @@ class RBT {
       if(cur.leftPointer!=Ext && inRange( cur.leftPointer.buildingNum, x,y)){
       recurPrint(cur.leftPointer,x,y);
       } 
-      System.out.print("("+cur.buildingNum+" "+ cur.exec_time+" "+ cur.total_time+") ");
+      System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
       if(cur.rightPointer!=Ext && inRange(cur.rightPointer.buildingNum,x,y))
         recurPrint(cur.rightPointer,x,y);
     }

@@ -8,6 +8,8 @@ import java.util.*;
 //exectime -> execution_time
 //bst -> rbTree
 //h -> heap
+//bNumber
+//bNumber1
 
 class Assignment{
     String type;
@@ -15,8 +17,8 @@ class Assignment{
     int globaltime;
     int total_time;
     int x,y;
-    Assignment(int gt,String command,int a,int s){//insert
-        globaltime=gt;
+    Assignment(int gTime,String command,int a,int s){//insert
+        globaltime=gTime;
         if(command.equalsIgnoreCase("Insert")){
         type=command;
         buildingNo=a;
@@ -78,8 +80,8 @@ class WayneEnterprise{
            
             String contentLine = br.readLine();
            ;
-            String gt = " ", command = " ", totalT = " ";
-            String builnum =" ", builnum1 = " ", builnum2 = " ";
+            String gTime = " ", command = " ", totalT = " ";
+            String bNumber =" ", bNumber1 = " ", bNumber2 = " ";
             while (contentLine != null) {
                 int gti = contentLine.indexOf(':');
                 int i = contentLine.indexOf('(');
@@ -87,36 +89,36 @@ class WayneEnterprise{
                 int close = contentLine.indexOf(')');
                 if(i!=-1)
                 {
-                    gt = contentLine.substring(0,gti);
+                    gTime = contentLine.substring(0,gti);
                   
                     command = contentLine.substring(gti+2,i);
           
                     if(command.equalsIgnoreCase("Insert"))
                     {
 
-                        builnum = contentLine.substring(i+1,comma);
+                        bNumber = contentLine.substring(i+1,comma);
                         
                         totalT = contentLine.substring(comma+1,close);
                         
-                         Assignment new_proj=new Assignment(Integer.valueOf(gt),"Insert",Integer.valueOf(builnum),Integer.valueOf(totalT));
+                         Assignment new_proj=new Assignment(Integer.valueOf(gTime),"Insert",Integer.valueOf(bNumber),Integer.valueOf(totalT));
                          construct.add(new_proj);
                         
                     }
                     else{//Print
                         if(comma!=-1) // 2 parameters (range)
                         {
-                            builnum1 = contentLine.substring(i+1,comma);
+                            bNumber1 = contentLine.substring(i+1,comma);
                          
-                            builnum2 = contentLine.substring(comma+1,close);
-                            Assignment new_proj=new Assignment(Integer.valueOf(gt),"Print",Integer.valueOf(builnum1),Integer.valueOf(builnum2));
+                            bNumber2 = contentLine.substring(comma+1,close);
+                            Assignment new_proj=new Assignment(Integer.valueOf(gTime),"Print",Integer.valueOf(bNumber1),Integer.valueOf(bNumber2));
                             construct.add(new_proj);
                             
                         }
                         else //print one triplet
                         {
-                            builnum = contentLine.substring(i+1,close);
-                            //bw.write(" BuildingID " + builnum);
-                             Assignment new_proj=new Assignment(Integer.valueOf(gt),"Print",Integer.valueOf(builnum),-1);
+                            bNumber = contentLine.substring(i+1,close);
+                            //bw.write(" BuildingID " + bNumber);
+                             Assignment new_proj=new Assignment(Integer.valueOf(gTime),"Print",Integer.valueOf(bNumber),-1);
                             construct.add(new_proj);
                         }
                     }

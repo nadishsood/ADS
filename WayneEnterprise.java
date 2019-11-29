@@ -519,7 +519,7 @@ class RBT {
           // case 3.1
           s.nodeColor = 0;
           x.parentPointer.nodeColor = 1;
-          leftRotate(x.parentPointer);
+          rotate_left(x.parentPointer);
           s = x.parentPointer.rightPointer;
         }
 
@@ -540,7 +540,7 @@ class RBT {
           s.nodeColor = x.parentPointer.nodeColor;
           x.parentPointer.nodeColor = 0;
           s.rightPointer.nodeColor = 0;
-          leftRotate(x.parentPointer);
+          rotate_left(x.parentPointer);
           x = root;
         }
       } else {
@@ -562,7 +562,7 @@ class RBT {
             // case 3.3
             s.rightPointer.nodeColor = 0;
             s.nodeColor = 1;
-            leftRotate(s);
+            rotate_left(s);
             s = x.parentPointer.leftPointer;
           } 
 
@@ -579,15 +579,15 @@ class RBT {
   }
 
 
-  private void treeTransplant(Node u, Node v){
-    if (u.parentPointer == null) {
-      root = v;
-    } else if (u == u.parentPointer.leftPointer){
-      u.parentPointer.leftPointer = v;
+  private void treeTransplant(Node p, Node q){
+    if (p.parentPointer == null) {
+      root = q;
+    } else if (p == p.parentPointer.leftPointer){
+      p.parentPointer.leftPointer = q;
     } else {
-      u.parentPointer.rightPointer = v;
+      p.parentPointer.rightPointer = q;
     }
-    v.parentPointer = u.parentPointer;
+    q.parentPointer = p.parentPointer;
   }
 
   private void deleteKeyNode(Node node, int key) {
@@ -646,13 +646,13 @@ class RBT {
   
   // fix the red-black tree
   private void inserter(Node k){
-    Node u;
+    Node p;
     while (k.parentPointer.nodeColor == 1) {
       if (k.parentPointer == k.parentPointer.parentPointer.rightPointer) {
-        u = k.parentPointer.parentPointer.leftPointer; // uncle
-        if (u.nodeColor == 1) {
+        p = k.parentPointer.parentPointer.leftPointer; // uncle
+        if (p.nodeColor == 1) {
           // case 3.1
-          u.nodeColor = 0;
+          p.nodeColor = 0;
           k.parentPointer.nodeColor = 0;
           k.parentPointer.parentPointer.nodeColor = 1;
           k = k.parentPointer.parentPointer;
@@ -665,14 +665,14 @@ class RBT {
           // case 3.2.1
           k.parentPointer.nodeColor = 0;
           k.parentPointer.parentPointer.nodeColor = 1;
-          leftRotate(k.parentPointer.parentPointer);
+          rotate_left(k.parentPointer.parentPointer);
         }
       } else {
-        u = k.parentPointer.parentPointer.rightPointer; // uncle
+        p = k.parentPointer.parentPointer.rightPointer; // uncle
 
-        if (u.nodeColor == 1) {
+        if (p.nodeColor == 1) {
           // mirror case 3.1
-          u.nodeColor = 0;
+          p.nodeColor = 0;
           k.parentPointer.nodeColor = 0;
           k.parentPointer.parentPointer.nodeColor = 1;
           k = k.parentPointer.parentPointer;  
@@ -680,7 +680,7 @@ class RBT {
           if (k == k.parentPointer.rightPointer) {
             // mirror case 3.2.2
             k = k.parentPointer;
-            leftRotate(k);
+            rotate_left(k);
           }
           // mirror case 3.2.1
           k.parentPointer.nodeColor = 0;
@@ -753,7 +753,7 @@ class RBT {
   
 
   // rotate leftPointer at node x
-  public void leftRotate(Node x) {
+  public void rotate_left(Node x) {
     Node y = x.rightPointer;
     x.rightPointer = y.leftPointer;
     if (y.leftPointer != ExternalNode) {

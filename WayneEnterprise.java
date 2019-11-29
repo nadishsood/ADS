@@ -505,77 +505,457 @@ class Heap  {
 // // // /// /////// //// //// //// /// //// /// // // / ////////// // // /// /////// //// //// //// /// //// /// // // / ////////
 
 
+// class RBT {
+//   private Node root_node;
+//   private Node ExternalNode;
+
+// // fix the rb tree modified by the delete operation
+//   private void Deleter(Node x) {
+//     Node s;
+//     while (x != root_node && x.nodeColor == 0) {
+//       if (x == x.parentPointer.leftPointer) {
+//         s = x.parentPointer.rightPointer;
+//         if (s.nodeColor == 1) {
+//           // case 3.1
+//           s.nodeColor = 0;
+//           x.parentPointer.nodeColor = 1;
+//           rotate_left(x.parentPointer);
+//           s = x.parentPointer.rightPointer;
+//         }
+
+//         if (s.leftPointer.nodeColor == 0 && s.rightPointer.nodeColor == 0) {
+//           // case 3.2
+//           s.nodeColor = 1;
+//           x = x.parentPointer;
+//         } else {
+//           if (s.rightPointer.nodeColor == 0) {
+//             // case 3.3
+//             s.leftPointer.nodeColor = 0;
+//             s.nodeColor = 1;
+//             rotate_right(s);
+//             s = x.parentPointer.rightPointer;
+//           } 
+
+//           // case 3.4
+//           s.nodeColor = x.parentPointer.nodeColor;
+//           x.parentPointer.nodeColor = 0;
+//           s.rightPointer.nodeColor = 0;
+//           rotate_left(x.parentPointer);
+//           x = root_node;
+//         }
+//       } else {
+//         s = x.parentPointer.leftPointer;
+//         if (s.nodeColor == 1) {
+//           // case 3.1
+//           s.nodeColor = 0;
+//           x.parentPointer.nodeColor = 1;
+//           rotate_right(x.parentPointer);
+//           s = x.parentPointer.leftPointer;
+//         }
+
+//         if (s.rightPointer.nodeColor == 0 && s.rightPointer.nodeColor == 0) {
+//           // case 3.2
+//           s.nodeColor = 1;
+//           x = x.parentPointer;
+//         } else {
+//           if (s.leftPointer.nodeColor == 0) {
+//             // case 3.3
+//             s.rightPointer.nodeColor = 0;
+//             s.nodeColor = 1;
+//             rotate_left(s);
+//             s = x.parentPointer.leftPointer;
+//           } 
+
+//           // case 3.4
+//           s.nodeColor = x.parentPointer.nodeColor;
+//           x.parentPointer.nodeColor = 0;
+//           s.leftPointer.nodeColor = 0;
+//           rotate_right(x.parentPointer);
+//           x = root_node;
+//         }
+//       } 
+//     }
+//     x.nodeColor = 0;
+//   }
+
+
+//   private void treeTransplant(Node p, Node q){
+//     if (p.parentPointer == null) {
+//       root_node = q;
+//     } else if (p == p.parentPointer.leftPointer){
+//       p.parentPointer.leftPointer = q;
+//     } else {
+//       p.parentPointer.rightPointer = q;
+//     }
+//     q.parentPointer = p.parentPointer;
+//   }
+
+//   private void deleteKeyNode(Node node, int key) {
+//     // find the node containing key
+//     Node n = ExternalNode;
+//     Node x, y;
+//     while (node != ExternalNode){
+//       if (node.buildingNum == key) {
+//         n = node;
+//       }
+
+//       if (node.buildingNum <key) {
+//         node = node.rightPointer;
+//       } else {
+//         node = node.leftPointer;
+//       }
+//     }
+
+//     if (n == ExternalNode) {
+//       System.out.println("Can't find key");
+//       return;
+//     } 
+
+//     y = n;
+//     int yOriginalColor = y.nodeColor;
+//     if (n.leftPointer == ExternalNode) {
+//       x = n.rightPointer;
+//       treeTransplant(n, n.rightPointer);
+//     } else if (n.rightPointer == ExternalNode) {
+//       x = n.leftPointer;
+//       treeTransplant(n, n.leftPointer);
+//     } 
+//     else {
+//       y = minKey(n.rightPointer);
+//       yOriginalColor = y.nodeColor;
+//       x = y.rightPointer;
+//       if (y.parentPointer == n) {
+//         x.parentPointer = y;
+//       } else {
+//         treeTransplant(y, y.rightPointer);
+//         y.rightPointer = n.rightPointer;
+//         y.rightPointer.parentPointer = y;
+//       }
+
+//       treeTransplant(n, y);
+//       y.leftPointer = n.leftPointer;
+//       y.leftPointer.parentPointer = y;
+//       y.nodeColor = n.nodeColor;
+//     }
+//     if (yOriginalColor == 0){
+//       Deleter(x);
+//     }
+//   }
+
+
+  
+//   // fix the red-black tree
+//   private void inserter(Node k){
+//     Node p;
+//     while (k.parentPointer.nodeColor == 1) {
+//       if (k.parentPointer == k.parentPointer.parentPointer.rightPointer) {
+//         p = k.parentPointer.parentPointer.leftPointer; // uncle
+//         if (p.nodeColor == 1) {
+//           // case 3.1
+//           p.nodeColor = 0;
+//           k.parentPointer.nodeColor = 0;
+//           k.parentPointer.parentPointer.nodeColor = 1;
+//           k = k.parentPointer.parentPointer;
+//         } else {
+//           if (k == k.parentPointer.leftPointer) {
+//             // case 3.2.2
+//             k = k.parentPointer;
+//             rotate_right(k);
+//           }
+//           // case 3.2.1
+//           k.parentPointer.nodeColor = 0;
+//           k.parentPointer.parentPointer.nodeColor = 1;
+//           rotate_left(k.parentPointer.parentPointer);
+//         }
+//       } else {
+//         p = k.parentPointer.parentPointer.rightPointer; // uncle
+
+//         if (p.nodeColor == 1) {
+//           // mirror case 3.1
+//           p.nodeColor = 0;
+//           k.parentPointer.nodeColor = 0;
+//           k.parentPointer.parentPointer.nodeColor = 1;
+//           k = k.parentPointer.parentPointer;  
+//         } else {
+//           if (k == k.parentPointer.rightPointer) {
+//             // mirror case 3.2.2
+//             k = k.parentPointer;
+//             rotate_left(k);
+//           }
+//           // mirror case 3.2.1
+//           k.parentPointer.nodeColor = 0;
+//           k.parentPointer.parentPointer.nodeColor = 1;
+//           rotate_right(k.parentPointer.parentPointer);
+//         }
+//       }
+//       if (k == root_node) {
+//         break;
+//       }
+//     }
+//     root_node.nodeColor = 0;
+//   }
+
+//   // find the node with the minKey key
+//   public Node minKey(Node node) {
+//     while (node.leftPointer != ExternalNode) {
+//       node = node.leftPointer;
+//     }
+//     return node;
+//   }
+
+//   // find the node with the maximum key
+//   public Node maximum(Node node) {
+//     while (node.rightPointer != ExternalNode) {
+//       node = node.rightPointer;
+//     }
+//     return node;
+//   }
+  
+
+//   // rotate leftPointer at node x
+//   public void rotate_left(Node x) {
+//     Node y = x.rightPointer;
+//     x.rightPointer = y.leftPointer;
+//     if (y.leftPointer != ExternalNode) {
+//       y.leftPointer.parentPointer = x;
+//     }
+//     y.parentPointer = x.parentPointer;
+//     if (x.parentPointer == null) {
+//       this.root_node = y;
+//     } else if (x == x.parentPointer.leftPointer) {
+//       x.parentPointer.leftPointer = y;
+//     } else {
+//       x.parentPointer.rightPointer = y;
+//     }
+//     y.leftPointer = x;
+//     x.parentPointer = y;
+//   }
+
+//   // rotate rightPointer at node x
+//   public void rotate_right(Node x) {
+//     Node y = x.leftPointer;
+//     x.leftPointer = y.rightPointer;
+//     if (y.rightPointer != ExternalNode) {
+//       y.rightPointer.parentPointer = x;
+//     }
+//     y.parentPointer = x.parentPointer;
+//     if (x.parentPointer == null) {
+//       this.root_node = y;
+//     } else if (x == x.parentPointer.rightPointer) {
+//       x.parentPointer.rightPointer = y;
+//     } else {
+//       x.parentPointer.leftPointer = y;
+//     }
+//     y.rightPointer = x;
+//     x.parentPointer = y;
+//   }
+
+//   // insert the key to the tree in its appropriate position
+//   // and fix the tree
+//   public void insert(Node node) {
+//     // Ordinary Binary Search Insertion
+    
+    
+//     node.execution_time=0;
+//     node.leftPointer=ExternalNode;
+//     node.rightPointer=ExternalNode;
+//     node.parentPointer=null;
+//     node.nodeColor=1;
+    
+//      // new node must be red
+
+//     Node y = null;
+//     Node x = this.root_node;
+
+//     while (x != ExternalNode) {
+//       y = x;
+//       if (node.buildingNum < x.buildingNum) {
+//         x = x.leftPointer;
+//       } else {
+//         x = x.rightPointer;
+//       }
+//     }
+
+//     // y is parentPointer of x
+//     node.parentPointer = y;
+//     if (y == null) {
+//       root_node = node;
+//     } else if (node.buildingNum < y.buildingNum) {
+//       y.leftPointer = node;
+//     } else {
+//       y.rightPointer = node;
+//     }
+
+//     // if new node is a root_node node, simply return
+//     if (node.parentPointer == null){
+//       node.nodeColor = 0;
+//       return;
+//     }
+
+//     // if the grandparent is null, simply return
+//     if (node.parentPointer.parentPointer == null) {
+//       return;
+//     }
+
+//     // Fix the tree
+//     inserter(node);
+//   }
+
+  
+
+//   // delete the node from the tree
+//   public void nodeDelete(int buildingNum) {
+//     deleteKeyNode(this.root_node, buildingNum);
+//   }
+
+//   // print the tree structure on the screen
+  
+//   void print(int buildingNo){
+//     Node cur_ptr=root_node;
+//     while(cur_ptr!=null){
+//       if(cur_ptr.buildingNum == buildingNo){
+//        System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
+//         System.out.println();
+//         return;
+//       }
+//       else if(buildingNo>cur_ptr.buildingNum)
+//         cur_ptr=cur_ptr.rightPointer;
+//       else
+//         cur_ptr=cur_ptr.leftPointer;
+//     }
+//   }
+
+//   void printRange(int x,int y)
+//   {
+//     Node cur_ptr=root_node;
+//     while(cur_ptr!=null){
+//       if(cur_ptr.buildingNum>=x && cur_ptr.buildingNum<=y){
+//         printAll(cur_ptr,x,y);
+//         System.out.println();
+//         return;
+//       }
+//       else if(cur_ptr.buildingNum<x){
+//         cur_ptr=cur_ptr.rightPointer;
+//       }
+//       else{
+//         cur_ptr=cur_ptr.leftPointer;
+//       }
+//     }
+//   }
+
+//   void printAll(Node cur_ptr,int x,int y){
+//     if(cur_ptr==ExternalNode ) return;
+
+//     if(cur_ptr.buildingNum==x){
+//       printAll(cur_ptr.rightPointer,x,y);
+//       System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
+//     }
+//     else if(cur_ptr.buildingNum==y){
+//       printAll(cur_ptr.leftPointer,x,y);
+//       System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
+    
+//     }
+//     else
+//     {
+//       if(cur_ptr.leftPointer!=ExternalNode && checkRange( cur_ptr.leftPointer.buildingNum, x,y)){
+//       printAll(cur_ptr.leftPointer,x,y);
+//       } 
+//       System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
+//       if(cur_ptr.rightPointer!=ExternalNode && checkRange(cur_ptr.rightPointer.buildingNum,x,y))
+//         printAll(cur_ptr.rightPointer,x,y);
+//     }
+//   }
+
+//   boolean checkRange(int target,int l,int heap){
+//     if(target>=l && target<=heap)
+//       return true;
+//     return false;
+//   }
+
+//   public RBT() {
+//     ExternalNode = new Node();
+//     ExternalNode.buildingNum=-1;
+//     ExternalNode.nodeColor = 0;
+//     ExternalNode.leftPointer = null;
+//     ExternalNode.rightPointer = null;
+//     root_node = ExternalNode;
+//   }
+// }
+
+
+
+
 class RBT {
   private Node root_node;
   private Node ExternalNode;
 
 // fix the rb tree modified by the delete operation
-  private void Deleter(Node x) {
+  private void Deleter(Node f) {
     Node s;
-    while (x != root_node && x.nodeColor == 0) {
-      if (x == x.parentPointer.leftPointer) {
-        s = x.parentPointer.rightPointer;
+    while (f != root_node && f.nodeColor == 0) {
+      if (f == f.parentPointer.leftPointer) {
+        s = f.parentPointer.rightPointer;
         if (s.nodeColor == 1) {
           // case 3.1
           s.nodeColor = 0;
-          x.parentPointer.nodeColor = 1;
-          rotate_left(x.parentPointer);
-          s = x.parentPointer.rightPointer;
+          f.parentPointer.nodeColor = 1;
+          rotate_left(f.parentPointer);
+          s = f.parentPointer.rightPointer;
         }
 
         if (s.leftPointer.nodeColor == 0 && s.rightPointer.nodeColor == 0) {
           // case 3.2
           s.nodeColor = 1;
-          x = x.parentPointer;
+          f = f.parentPointer;
         } else {
           if (s.rightPointer.nodeColor == 0) {
             // case 3.3
             s.leftPointer.nodeColor = 0;
             s.nodeColor = 1;
             rotate_right(s);
-            s = x.parentPointer.rightPointer;
+            s = f.parentPointer.rightPointer;
           } 
 
           // case 3.4
-          s.nodeColor = x.parentPointer.nodeColor;
-          x.parentPointer.nodeColor = 0;
+          s.nodeColor = f.parentPointer.nodeColor;
+          f.parentPointer.nodeColor = 0;
           s.rightPointer.nodeColor = 0;
-          rotate_left(x.parentPointer);
-          x = root_node;
+          rotate_left(f.parentPointer);
+          f = root_node;
         }
       } else {
-        s = x.parentPointer.leftPointer;
+        s = f.parentPointer.leftPointer;
         if (s.nodeColor == 1) {
           // case 3.1
           s.nodeColor = 0;
-          x.parentPointer.nodeColor = 1;
-          rotate_right(x.parentPointer);
-          s = x.parentPointer.leftPointer;
+          f.parentPointer.nodeColor = 1;
+          rotate_right(f.parentPointer);
+          s = f.parentPointer.leftPointer;
         }
 
         if (s.rightPointer.nodeColor == 0 && s.rightPointer.nodeColor == 0) {
           // case 3.2
           s.nodeColor = 1;
-          x = x.parentPointer;
+          f = f.parentPointer;
         } else {
           if (s.leftPointer.nodeColor == 0) {
             // case 3.3
             s.rightPointer.nodeColor = 0;
             s.nodeColor = 1;
             rotate_left(s);
-            s = x.parentPointer.leftPointer;
+            s = f.parentPointer.leftPointer;
           } 
 
           // case 3.4
-          s.nodeColor = x.parentPointer.nodeColor;
-          x.parentPointer.nodeColor = 0;
+          s.nodeColor = f.parentPointer.nodeColor;
+          f.parentPointer.nodeColor = 0;
           s.leftPointer.nodeColor = 0;
-          rotate_right(x.parentPointer);
-          x = root_node;
+          rotate_right(f.parentPointer);
+          f = root_node;
         }
       } 
     }
-    x.nodeColor = 0;
+    f.nodeColor = 0;
   }
 
 
@@ -592,11 +972,11 @@ class RBT {
 
   private void deleteKeyNode(Node node, int key) {
     // find the node containing key
-    Node z = ExternalNode;
-    Node x, y;
+    Node n = ExternalNode;
+    Node f, g;
     while (node != ExternalNode){
       if (node.buildingNum == key) {
-        z = node;
+        n = node;
       }
 
       if (node.buildingNum <key) {
@@ -606,39 +986,39 @@ class RBT {
       }
     }
 
-    if (z == ExternalNode) {
-      System.out.println("Couldn't find key in the tree");
+    if (n == ExternalNode) {
+      System.out.println("Can't find key");
       return;
     } 
 
-    y = z;
-    int yOriginalColor = y.nodeColor;
-    if (z.leftPointer == ExternalNode) {
-      x = z.rightPointer;
-      treeTransplant(z, z.rightPointer);
-    } else if (z.rightPointer == ExternalNode) {
-      x = z.leftPointer;
-      treeTransplant(z, z.leftPointer);
+    g = n;
+    int yOriginalColor = g.nodeColor;
+    if (n.leftPointer == ExternalNode) {
+      f = n.rightPointer;
+      treeTransplant(n, n.rightPointer);
+    } else if (n.rightPointer == ExternalNode) {
+      f = n.leftPointer;
+      treeTransplant(n, n.leftPointer);
     } 
     else {
-      y = minKey(z.rightPointer);
-      yOriginalColor = y.nodeColor;
-      x = y.rightPointer;
-      if (y.parentPointer == z) {
-        x.parentPointer = y;
+      g = minKey(n.rightPointer);
+      yOriginalColor = g.nodeColor;
+      f = g.rightPointer;
+      if (g.parentPointer == n) {
+        f.parentPointer = g;
       } else {
-        treeTransplant(y, y.rightPointer);
-        y.rightPointer = z.rightPointer;
-        y.rightPointer.parentPointer = y;
+        treeTransplant(g, g.rightPointer);
+        g.rightPointer = n.rightPointer;
+        g.rightPointer.parentPointer = g;
       }
 
-      treeTransplant(z, y);
-      y.leftPointer = z.leftPointer;
-      y.leftPointer.parentPointer = y;
-      y.nodeColor = z.nodeColor;
+      treeTransplant(n, g);
+      g.leftPointer = n.leftPointer;
+      g.leftPointer.parentPointer = g;
+      g.nodeColor = n.nodeColor;
     }
     if (yOriginalColor == 0){
-      Deleter(x);
+      Deleter(f);
     }
   }
 
@@ -712,42 +1092,42 @@ class RBT {
   }
   
 
-  // rotate leftPointer at node x
-  public void rotate_left(Node x) {
-    Node y = x.rightPointer;
-    x.rightPointer = y.leftPointer;
-    if (y.leftPointer != ExternalNode) {
-      y.leftPointer.parentPointer = x;
+  // rotate leftPointer at node f
+  public void rotate_left(Node f) {
+    Node g = f.rightPointer;
+    f.rightPointer = g.leftPointer;
+    if (g.leftPointer != ExternalNode) {
+      g.leftPointer.parentPointer = f;
     }
-    y.parentPointer = x.parentPointer;
-    if (x.parentPointer == null) {
-      this.root_node = y;
-    } else if (x == x.parentPointer.leftPointer) {
-      x.parentPointer.leftPointer = y;
+    g.parentPointer = f.parentPointer;
+    if (f.parentPointer == null) {
+      this.root_node = g;
+    } else if (f == f.parentPointer.leftPointer) {
+      f.parentPointer.leftPointer = g;
     } else {
-      x.parentPointer.rightPointer = y;
+      f.parentPointer.rightPointer = g;
     }
-    y.leftPointer = x;
-    x.parentPointer = y;
+    g.leftPointer = f;
+    f.parentPointer = g;
   }
 
-  // rotate rightPointer at node x
-  public void rotate_right(Node x) {
-    Node y = x.leftPointer;
-    x.leftPointer = y.rightPointer;
-    if (y.rightPointer != ExternalNode) {
-      y.rightPointer.parentPointer = x;
+  // rotate rightPointer at node f
+  public void rotate_right(Node f) {
+    Node g = f.leftPointer;
+    f.leftPointer = g.rightPointer;
+    if (g.rightPointer != ExternalNode) {
+      g.rightPointer.parentPointer = f;
     }
-    y.parentPointer = x.parentPointer;
-    if (x.parentPointer == null) {
-      this.root_node = y;
-    } else if (x == x.parentPointer.rightPointer) {
-      x.parentPointer.rightPointer = y;
+    g.parentPointer = f.parentPointer;
+    if (f.parentPointer == null) {
+      this.root_node = g;
+    } else if (f == f.parentPointer.rightPointer) {
+      f.parentPointer.rightPointer = g;
     } else {
-      x.parentPointer.leftPointer = y;
+      f.parentPointer.leftPointer = g;
     }
-    y.rightPointer = x;
-    x.parentPointer = y;
+    g.rightPointer = f;
+    f.parentPointer = g;
   }
 
   // insert the key to the tree in its appropriate position
@@ -764,26 +1144,26 @@ class RBT {
     
      // new node must be red
 
-    Node y = null;
-    Node x = this.root_node;
+    Node g = null;
+    Node f = this.root_node;
 
-    while (x != ExternalNode) {
-      y = x;
-      if (node.buildingNum < x.buildingNum) {
-        x = x.leftPointer;
+    while (f != ExternalNode) {
+      g = f;
+      if (node.buildingNum < f.buildingNum) {
+        f = f.leftPointer;
       } else {
-        x = x.rightPointer;
+        f = f.rightPointer;
       }
     }
 
-    // y is parentPointer of x
-    node.parentPointer = y;
-    if (y == null) {
+    // g is parentPointer of f
+    node.parentPointer = g;
+    if (g == null) {
       root_node = node;
-    } else if (node.buildingNum < y.buildingNum) {
-      y.leftPointer = node;
+    } else if (node.buildingNum < g.buildingNum) {
+      g.leftPointer = node;
     } else {
-      y.rightPointer = node;
+      g.rightPointer = node;
     }
 
     // if new node is a root_node node, simply return
@@ -825,16 +1205,16 @@ class RBT {
     }
   }
 
-  void printRange(int x,int y)
+  void printRange(int f,int g)
   {
     Node cur_ptr=root_node;
     while(cur_ptr!=null){
-      if(cur_ptr.buildingNum>=x && cur_ptr.buildingNum<=y){
-        printAll(cur_ptr,x,y);
+      if(cur_ptr.buildingNum>=f && cur_ptr.buildingNum<=g){
+        printAll(cur_ptr,f,g);
         System.out.println();
         return;
       }
-      else if(cur_ptr.buildingNum<x){
+      else if(cur_ptr.buildingNum<f){
         cur_ptr=cur_ptr.rightPointer;
       }
       else{
@@ -843,26 +1223,26 @@ class RBT {
     }
   }
 
-  void printAll(Node cur_ptr,int x,int y){
+  void printAll(Node cur_ptr,int f,int g){
     if(cur_ptr==ExternalNode ) return;
 
-    if(cur_ptr.buildingNum==x){
-      printAll(cur_ptr.rightPointer,x,y);
+    if(cur_ptr.buildingNum==f){
+      printAll(cur_ptr.rightPointer,f,g);
       System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
     }
-    else if(cur_ptr.buildingNum==y){
-      printAll(cur_ptr.leftPointer,x,y);
+    else if(cur_ptr.buildingNum==g){
+      printAll(cur_ptr.leftPointer,f,g);
       System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
     
     }
     else
     {
-      if(cur_ptr.leftPointer!=ExternalNode && checkRange( cur_ptr.leftPointer.buildingNum, x,y)){
-      printAll(cur_ptr.leftPointer,x,y);
+      if(cur_ptr.leftPointer!=ExternalNode && checkRange( cur_ptr.leftPointer.buildingNum, f,g)){
+      printAll(cur_ptr.leftPointer,f,g);
       } 
       System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
-      if(cur_ptr.rightPointer!=ExternalNode && checkRange(cur_ptr.rightPointer.buildingNum,x,y))
-        printAll(cur_ptr.rightPointer,x,y);
+      if(cur_ptr.rightPointer!=ExternalNode && checkRange(cur_ptr.rightPointer.buildingNum,f,g))
+        printAll(cur_ptr.rightPointer,f,g);
     }
   }
 
@@ -881,6 +1261,3 @@ class RBT {
     root_node = ExternalNode;
   }
 }
-
-
-

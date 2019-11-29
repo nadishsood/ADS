@@ -506,13 +506,13 @@ class Heap  {
 
 
 class RBT {
-  private Node root;
+  private Node root_node;
   private Node ExternalNode;
 
 // fix the rb tree modified by the delete operation
   private void Deleter(Node x) {
     Node s;
-    while (x != root && x.nodeColor == 0) {
+    while (x != root_node && x.nodeColor == 0) {
       if (x == x.parentPointer.leftPointer) {
         s = x.parentPointer.rightPointer;
         if (s.nodeColor == 1) {
@@ -541,7 +541,7 @@ class RBT {
           x.parentPointer.nodeColor = 0;
           s.rightPointer.nodeColor = 0;
           rotate_left(x.parentPointer);
-          x = root;
+          x = root_node;
         }
       } else {
         s = x.parentPointer.leftPointer;
@@ -571,7 +571,7 @@ class RBT {
           x.parentPointer.nodeColor = 0;
           s.leftPointer.nodeColor = 0;
           rotate_right(x.parentPointer);
-          x = root;
+          x = root_node;
         }
       } 
     }
@@ -581,7 +581,7 @@ class RBT {
 
   private void treeTransplant(Node p, Node q){
     if (p.parentPointer == null) {
-      root = q;
+      root_node = q;
     } else if (p == p.parentPointer.leftPointer){
       p.parentPointer.leftPointer = q;
     } else {
@@ -688,32 +688,13 @@ class RBT {
           rotate_right(k.parentPointer.parentPointer);
         }
       }
-      if (k == root) {
+      if (k == root_node) {
         break;
       }
     }
-    root.nodeColor = 0;
+    root_node.nodeColor = 0;
   }
 
-  private void printToScreen(Node root, String indent, boolean end) {
-    // print the tree structure on the screen
-      if (root != ExternalNode) {
-       System.out.print(indent);
-       if (end) {
-          System.out.print("R----");
-          indent += "     ";
-       } else {
-          System.out.print("L----");
-          indent += "|    ";
-       }
-            
-       String sColor = root.nodeColor == 1?"RED":"BLACK";
-       System.out.println(root.buildingNum+" "+root.total_time+" "+root.execution_time + "(" + sColor + ")");
-       printToScreen(root.leftPointer, indent, false);
-       printToScreen(root.rightPointer, indent, true);
-    }
-  }
-  
   // find the node with the minKey key
   public Node minKey(Node node) {
     while (node.leftPointer != ExternalNode) {
@@ -729,27 +710,6 @@ class RBT {
     }
     return node;
   }
-
-  // find the successor of a given node
-  public Node successor(Node x) {
-    // if the rightPointer subtree is not null,
-    // the successor is the leftmost node in the
-    // rightPointer subtree
-    if (x.rightPointer != ExternalNode) {
-      return minKey(x.rightPointer);
-    }
-
-    // else it is the lowest ancestor of x whose
-    // leftPointer child is also an ancestor of x.
-    Node y = x.parentPointer;
-    while (y != ExternalNode && x == y.rightPointer) {
-      x = y;
-      y = y.parentPointer;
-    }
-    return y;
-  }
-
-  // find the predecessor of a given node
   
 
   // rotate leftPointer at node x
@@ -761,7 +721,7 @@ class RBT {
     }
     y.parentPointer = x.parentPointer;
     if (x.parentPointer == null) {
-      this.root = y;
+      this.root_node = y;
     } else if (x == x.parentPointer.leftPointer) {
       x.parentPointer.leftPointer = y;
     } else {
@@ -780,7 +740,7 @@ class RBT {
     }
     y.parentPointer = x.parentPointer;
     if (x.parentPointer == null) {
-      this.root = y;
+      this.root_node = y;
     } else if (x == x.parentPointer.rightPointer) {
       x.parentPointer.rightPointer = y;
     } else {
@@ -805,7 +765,7 @@ class RBT {
      // new node must be red
 
     Node y = null;
-    Node x = this.root;
+    Node x = this.root_node;
 
     while (x != ExternalNode) {
       y = x;
@@ -819,14 +779,14 @@ class RBT {
     // y is parentPointer of x
     node.parentPointer = y;
     if (y == null) {
-      root = node;
+      root_node = node;
     } else if (node.buildingNum < y.buildingNum) {
       y.leftPointer = node;
     } else {
       y.rightPointer = node;
     }
 
-    // if new node is a root node, simply return
+    // if new node is a root_node node, simply return
     if (node.parentPointer == null){
       node.nodeColor = 0;
       return;
@@ -845,64 +805,64 @@ class RBT {
 
   // delete the node from the tree
   public void nodeDelete(int buildingNum) {
-    deleteKeyNode(this.root, buildingNum);
+    deleteKeyNode(this.root_node, buildingNum);
   }
 
   // print the tree structure on the screen
   
   void print(int buildingNo){
-    Node cur=root;
-    while(cur!=null){
-      if(cur.buildingNum == buildingNo){
-       System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
+    Node cur_ptr=root_node;
+    while(cur_ptr!=null){
+      if(cur_ptr.buildingNum == buildingNo){
+       System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
         System.out.println();
         return;
       }
-      else if(buildingNo>cur.buildingNum)
-        cur=cur.rightPointer;
+      else if(buildingNo>cur_ptr.buildingNum)
+        cur_ptr=cur_ptr.rightPointer;
       else
-        cur=cur.leftPointer;
+        cur_ptr=cur_ptr.leftPointer;
     }
   }
 
   void printRange(int x,int y)
   {
-    Node cur=root;
-    while(cur!=null){
-      if(cur.buildingNum>=x && cur.buildingNum<=y){
-        printAll(cur,x,y);
+    Node cur_ptr=root_node;
+    while(cur_ptr!=null){
+      if(cur_ptr.buildingNum>=x && cur_ptr.buildingNum<=y){
+        printAll(cur_ptr,x,y);
         System.out.println();
         return;
       }
-      else if(cur.buildingNum<x){
-        cur=cur.rightPointer;
+      else if(cur_ptr.buildingNum<x){
+        cur_ptr=cur_ptr.rightPointer;
       }
       else{
-        cur=cur.leftPointer;
+        cur_ptr=cur_ptr.leftPointer;
       }
     }
   }
 
-  void printAll(Node cur,int x,int y){
-    if(cur==ExternalNode ) return;
+  void printAll(Node cur_ptr,int x,int y){
+    if(cur_ptr==ExternalNode ) return;
 
-    if(cur.buildingNum==x){
-      printAll(cur.rightPointer,x,y);
-      System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
+    if(cur_ptr.buildingNum==x){
+      printAll(cur_ptr.rightPointer,x,y);
+      System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
     }
-    else if(cur.buildingNum==y){
-      printAll(cur.leftPointer,x,y);
-      System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
+    else if(cur_ptr.buildingNum==y){
+      printAll(cur_ptr.leftPointer,x,y);
+      System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
     
     }
     else
     {
-      if(cur.leftPointer!=ExternalNode && checkRange( cur.leftPointer.buildingNum, x,y)){
-      printAll(cur.leftPointer,x,y);
+      if(cur_ptr.leftPointer!=ExternalNode && checkRange( cur_ptr.leftPointer.buildingNum, x,y)){
+      printAll(cur_ptr.leftPointer,x,y);
       } 
-      System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
-      if(cur.rightPointer!=ExternalNode && checkRange(cur.rightPointer.buildingNum,x,y))
-        printAll(cur.rightPointer,x,y);
+      System.out.print("("+cur_ptr.buildingNum+" "+ cur_ptr.execution_time+" "+ cur_ptr.total_time+") ");
+      if(cur_ptr.rightPointer!=ExternalNode && checkRange(cur_ptr.rightPointer.buildingNum,x,y))
+        printAll(cur_ptr.rightPointer,x,y);
     }
   }
 
@@ -918,7 +878,7 @@ class RBT {
     ExternalNode.nodeColor = 0;
     ExternalNode.leftPointer = null;
     ExternalNode.rightPointer = null;
-    root = ExternalNode;
+    root_node = ExternalNode;
   }
 }
 

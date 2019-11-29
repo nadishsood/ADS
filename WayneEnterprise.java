@@ -1,25 +1,14 @@
 import java.io.*;
 import java.util.*;
 
-//parentPointer -> parentPointer
-//left
-//rightPointer
-//color -> nodeColor
-//exectime -> execution_time
-//bst -> rbTree
-//h -> heap
-//bNumber
-//bNumber1
-//build
-
 class Assignment{
     String type;
     int buildingNo;
-    int globaltime;
+    int global_time;
     int total_time;
     int x,y;
-    Assignment(int gTime,String command,int a,int s){//insert
-        globaltime=gTime;
+    Assignment(int gTime,String command,int a,int s){
+        global_time=gTime;
         if(command.equalsIgnoreCase("Insert")){
         type=command;
         buildingNo=a;
@@ -42,10 +31,10 @@ class Assignment{
 
 
 class Node {
-    int buildingNum; // holds the key
-    Node parentPointer; // pointer to the parentPointer
-    Node leftPointer; // pointer to leftPointer child
-    Node rightPointer; // pointer to rightPointer child
+    int buildingNum; 
+    Node parentPointer; 
+    Node leftPointer; 
+    Node rightPointer; 
     int nodeColor; // 1 . Red, 0 . Black
     int execution_time;
     int total_time;
@@ -155,41 +144,41 @@ class WayneEnterprise{
         heap.insert(x);
         rbTree.insert(x);
         
-      startConstruction(build,rbTree,heap);
+      construct(build,rbTree,heap);
 
 }
 
-    static void startConstruction(Queue<Assignment> build,RBT rbTree,Heap heap){
-        Queue<Node> wait=new LinkedList<>();
-        int upcomingProject=-1;
+    static void construct(Queue<Assignment> build,RBT rbTree,Heap heap){
+        Queue<Node> holdQueue=new LinkedList<>();
+        int nextProject=-1;
         
    
          while(heap.heap[1]!=null){
           
-            Node current=heap.heap[1];
+            Node currentNode=heap.heap[1];
             if(!build.isEmpty())
-                upcomingProject=build.peek().globaltime;
+                nextProject=build.peek().global_time;
 
             boolean Over=false;
             for(int i=0;i<5;i++){
 
 
-                if(current.execution_time!=current.total_time)
+                if(currentNode.execution_time!=currentNode.total_time)
                 {
-                  current.execution_time++;
+                  currentNode.execution_time++;
                   globalTime++;
                 }
 
-               if(current.execution_time==current.total_time)
+               if(currentNode.execution_time==currentNode.total_time)
                 {
-                    if(globalTime==upcomingProject){
+                    if(globalTime==nextProject){
 
                  if(build.peek().type.equalsIgnoreCase("Insert")){
                   Assignment tp=build.poll();
-                      Node bb=new Node(tp.buildingNo,tp.total_time);
-                      bb.execution_time=0;
-                     rbTree.insert(bb);
-                     wait.add(bb);
+                      Node xx=new Node(tp.buildingNo,tp.total_time);
+                      xx.execution_time=0;
+                     rbTree.insert(xx);
+                     holdQueue.add(xx);
 
                 }
                   else{
@@ -203,25 +192,25 @@ class WayneEnterprise{
                         }
                 
                     
-                upcomingProject=build.peek()!=null?build.peek().globaltime: -1;
+                nextProject=build.peek()!=null?build.peek().global_time: -1;
                
             }
                   
-                    System.out.println(current.buildingNum+" "+ globalTime);
+                    System.out.println(currentNode.buildingNum+" "+ globalTime);
 
                  
-                  rbTree.deleteNode(current.buildingNum);
+                  rbTree.nodeDelete(currentNode.buildingNum);
                   heap.remove();
                 
 
-                    if(globalTime==upcomingProject){
+                    if(globalTime==nextProject){
 
                  if(build.peek().type.equalsIgnoreCase("Insert")){
                   Assignment tp=build.poll();
-                      Node bb=new Node(tp.buildingNo,tp.total_time);
-                    bb.execution_time=1;
-                     rbTree.insert(bb);
-                     wait.add(bb);
+                      Node xx=new Node(tp.buildingNo,tp.total_time);
+                    xx.execution_time=1;
+                     rbTree.insert(xx);
+                     holdQueue.add(xx);
 
                 }
                   else{
@@ -235,7 +224,7 @@ class WayneEnterprise{
                         }
                 
                         
-                upcomingProject=build.peek()!=null?build.peek().globaltime: -1;
+                nextProject=build.peek()!=null?build.peek().global_time: -1;
                
             }
                 
@@ -246,14 +235,14 @@ class WayneEnterprise{
 
                 }
 
-               if(globalTime==upcomingProject){
+               if(globalTime==nextProject){
 
                  if(build.peek().type.equalsIgnoreCase("Insert")){
                   Assignment tp=build.poll();
-                      Node bb=new Node(tp.buildingNo,tp.total_time);
-                     bb.execution_time=1;
-                     rbTree.insert(bb);
-                     wait.add(bb);
+                      Node xx=new Node(tp.buildingNo,tp.total_time);
+                     xx.execution_time=1;
+                     rbTree.insert(xx);
+                     holdQueue.add(xx);
 
                 }
                   else{
@@ -266,7 +255,7 @@ class WayneEnterprise{
 
                         }
                 
-                upcomingProject=build.peek()!=null?build.peek().globaltime: -1;
+                nextProject=build.peek()!=null?build.peek().global_time: -1;
                
             }
 
@@ -277,13 +266,13 @@ class WayneEnterprise{
     }
     if(!Over){
        heap.remove();
-       heap.insert(current);
+       heap.insert(currentNode);
     }
     
 
-    while(!wait.isEmpty())
+    while(!holdQueue.isEmpty())
     {
-        Node assigned = wait.poll();
+        Node assigned = holdQueue.poll();
        
         heap.insert(assigned);
     }
@@ -298,28 +287,21 @@ class WayneEnterprise{
 }
 
 
+// // // /// /////// //// //// //// /// //// /// // // / ////////// // // /// /////// //// //// //// /// //// /// // // / ////////
 
+// // // /// /////// //// //// //// // // // ///  HEAP  // // // /// /////// //// //// //// /// //// /// // // / //// /// ////////
 
-    /// HEAP ///
-    /// HEAP ///
-    /// HEAP ///
-    /// HEAP ///
-    /// HEAP ///
-    /// HEAP ///
-
-
-
-
+// // // /// /////// //// //// //// /// //// /// // // / ////////// // // /// /////// //// //// //// /// //// /// // // / ////////
 
 
 class Heap  {
      Node heap[]=new Node[2000];
-     Node dummy;
+     Node foo;
     
     int cursize;
     Heap(){
-      dummy=new Node(Integer.MIN_VALUE,Integer.MIN_VALUE);
-      heap[0] = dummy;
+      foo=new Node(Integer.MIN_VALUE,Integer.MIN_VALUE);
+      heap[0] = foo;
       heap[0].execution_time= -1;
       cursize=1;
 
@@ -329,117 +311,117 @@ class Heap  {
     {
 
         heap[cursize++]=key;
-        int last=cursize-1;
+        int end=cursize-1;
     
-        //minheapify(1);
-     while( heap[last].execution_time < heap[parentPointer(last)].execution_time)
+        //min_heapify(1);
+     while( heap[end].execution_time < heap[parentPointer(end)].execution_time)
         {
-            swap(last,parentPointer(last));
-            last=parentPointer(last);
+            swap(end,parentPointer(end));
+            end=parentPointer(end);
         }
 
-        while(heap[last].execution_time==heap[parentPointer(last)].execution_time){
-          if(heap[last].buildingNum<heap[parentPointer(last)].buildingNum)
+        while(heap[end].execution_time==heap[parentPointer(end)].execution_time){
+          if(heap[end].buildingNum<heap[parentPointer(end)].buildingNum)
           {
                
-            swap(last,parentPointer(last));
-                last=parentPointer(last);
+            swap(end,parentPointer(end));
+                end=parentPointer(end);
               
           }
           else break;
         }
-        minheapify(1); 
+        min_heapify(1); 
       
     }
  
-     void minheapify(int index)
+     void min_heapify(int index)
     
     {
-        Node ele=heap[index];
+        Node element=heap[index];
         Node min;
         int min_i=0;
         if(isLeaf(index))
             return;
-        if(isRcThere(index)){
-            if(ele.execution_time>heap[leftChild(index)].execution_time||ele.execution_time>heap[rightChild(index)].execution_time){
-            if(heap[leftChild(index)].execution_time<heap[rightChild(index)].execution_time){
-              min=heap[leftChild(index)];
-                min_i=leftChild(index);
+        if(checkRC(index)){
+            if(element.execution_time>heap[lChild(index)].execution_time||element.execution_time>heap[rChild(index)].execution_time){
+            if(heap[lChild(index)].execution_time<heap[rChild(index)].execution_time){
+              min=heap[lChild(index)];
+                min_i=lChild(index);
                 swap(min_i,index);
-                minheapify(min_i);
+                min_heapify(min_i);
             }
-            else if(heap[leftChild(index)].execution_time>heap[rightChild(index)].execution_time){
-                min=heap[rightChild(index)];
-                min_i=rightChild(index);
+            else if(heap[lChild(index)].execution_time>heap[rChild(index)].execution_time){
+                min=heap[rChild(index)];
+                min_i=rChild(index);
                 swap(min_i,index);
-                minheapify(min_i); 
+                min_heapify(min_i); 
             }
 
 
-            else if(heap[leftChild(index)].execution_time==heap[(rightChild(index))].execution_time){
+            else if(heap[lChild(index)].execution_time==heap[(rChild(index))].execution_time){
 
-              if(heap[leftChild(index)].buildingNum<heap[rightChild(index)].buildingNum){
-                min=heap[leftChild(index)];
-                     min_i=leftChild(index);
+              if(heap[lChild(index)].buildingNum<heap[rChild(index)].buildingNum){
+                min=heap[lChild(index)];
+                     min_i=lChild(index);
                      swap(min_i,index);
-            minheapify(min_i);
+            min_heapify(min_i);
                 }
               else{
-                min=heap[rightChild(index)];
-                    min_i=rightChild(index);
+                min=heap[rChild(index)];
+                    min_i=rChild(index);
                     swap(min_i,index);
-            minheapify(min_i);
+            min_heapify(min_i);
                 }
             }
         }
-        else if(ele.execution_time==heap[leftChild(index)].execution_time&&ele.execution_time==heap[rightChild(index)].execution_time)
+        else if(element.execution_time==heap[lChild(index)].execution_time&&element.execution_time==heap[rChild(index)].execution_time)
         {
-                if(heap[leftChild(index)].buildingNum<heap[rightChild(index)].buildingNum && ele.buildingNum>heap[leftChild(index)].buildingNum){
-                    min=heap[leftChild(index)];
-                     min_i=leftChild(index);
+                if(heap[lChild(index)].buildingNum<heap[rChild(index)].buildingNum && element.buildingNum>heap[lChild(index)].buildingNum){
+                    min=heap[lChild(index)];
+                     min_i=lChild(index);
                      swap(min_i,index);
-            minheapify(min_i);
+            min_heapify(min_i);
                 }
-                else if(heap[leftChild(index)].buildingNum>heap[rightChild(index)].buildingNum && ele.buildingNum>heap[rightChild(index)].buildingNum){
-                    min=heap[rightChild(index)];
-                    min_i=rightChild(index);
+                else if(heap[lChild(index)].buildingNum>heap[rChild(index)].buildingNum && element.buildingNum>heap[rChild(index)].buildingNum){
+                    min=heap[rChild(index)];
+                    min_i=rChild(index);
                     swap(min_i,index);
-            minheapify(min_i);
+            min_heapify(min_i);
                 }
         }
-        else if(ele.execution_time==heap[leftChild(index)].execution_time)
+        else if(element.execution_time==heap[lChild(index)].execution_time)
         {
-                if(ele.buildingNum>heap[leftChild(index)].buildingNum){
-                    min=heap[leftChild(index)];
-                     min_i=leftChild(index);
+                if(element.buildingNum>heap[lChild(index)].buildingNum){
+                    min=heap[lChild(index)];
+                     min_i=lChild(index);
                      swap(min_i,index);
-                     minheapify(min_i);
+                     min_heapify(min_i);
                 }
         }
-        else if(ele.execution_time==heap[rightChild(index)].execution_time)
+        else if(element.execution_time==heap[rChild(index)].execution_time)
         {
-                if(ele.buildingNum>heap[rightChild(index)].buildingNum){
-                    min=heap[rightChild(index)];
-                     min_i=rightChild(index);
+                if(element.buildingNum>heap[rChild(index)].buildingNum){
+                    min=heap[rChild(index)];
+                     min_i=rChild(index);
                      swap(min_i,index);
-            minheapify(min_i);
+            min_heapify(min_i);
                 }
         }
     }
 
 
-        else if(ele.execution_time>heap[leftChild(index)].execution_time){
-            min=heap[leftChild(index)];
-             min_i=leftChild(index);
+        else if(element.execution_time>heap[lChild(index)].execution_time){
+            min=heap[lChild(index)];
+             min_i=lChild(index);
              swap(min_i,index);
-            minheapify(min_i);
+            min_heapify(min_i);
         }
-        else if(ele.execution_time==heap[leftChild(index)].execution_time){
-            if(ele.buildingNum>heap[leftChild(index)].buildingNum){
-                    min=heap[leftChild(index)];
-                     min_i=leftChild(index);
+        else if(element.execution_time==heap[lChild(index)].execution_time){
+            if(element.buildingNum>heap[lChild(index)].buildingNum){
+                    min=heap[lChild(index)];
+                     min_i=lChild(index);
                      swap(min_i,index);
-                     minheapify(min_i);
+                     min_heapify(min_i);
                 }   
         }
        
@@ -447,7 +429,7 @@ class Heap  {
     }
 
 
-     boolean isRcThere(int p)
+     boolean checkRC(int p)
     {
         if((2*p+1)<cursize)
             return true;
@@ -459,12 +441,12 @@ class Heap  {
             return true;
         return false;
     }
-     int leftChild(int p)
+     int lChild(int p)
     {
         
         return 2*p;
     }
-     int rightChild(int p)
+     int rChild(int p)
     {
         
             return 2*p+1;
@@ -503,7 +485,7 @@ class Heap  {
         if(cursize>2){
         heap[1]=heap[cursize-1];
         cursize--;
-        minheapify(1);
+        min_heapify(1);
     }
     else{
       heap[1]=null;
@@ -516,34 +498,19 @@ class Heap  {
 }
    
 
+// // // /// /////// //// //// //// /// //// /// // // / ////////// // // /// /////// //// //// //// /// //// /// // // / ////////
 
+// // // /// /////// //// //// //// // // // ///  RED BLACK TREE // // // /// /////// //// //// //// /// //// /// // // / //// ///
 
-
-
-
-
-
-//RBT
-//RBT
-//RBT
-//RBT
-//RBT
-//RBT
-//RBT
-//RBT
-
-
+// // // /// /////// //// //// //// /// //// /// // // / ////////// // // /// /////// //// //// //// /// //// /// // // / ////////
 
 
 class RBT {
   private Node root;
-  private Node Ext;
+  private Node ExternalNode;
 
-  
-  
-
-  // fix the rb tree modified by the delete operation
-  private void fixDelete(Node x) {
+// fix the rb tree modified by the delete operation
+  private void Deleter(Node x) {
     Node s;
     while (x != root && x.nodeColor == 0) {
       if (x == x.parentPointer.leftPointer) {
@@ -565,7 +532,7 @@ class RBT {
             // case 3.3
             s.leftPointer.nodeColor = 0;
             s.nodeColor = 1;
-            rightRotate(s);
+            rotate_right(s);
             s = x.parentPointer.rightPointer;
           } 
 
@@ -582,7 +549,7 @@ class RBT {
           // case 3.1
           s.nodeColor = 0;
           x.parentPointer.nodeColor = 1;
-          rightRotate(x.parentPointer);
+          rotate_right(x.parentPointer);
           s = x.parentPointer.leftPointer;
         }
 
@@ -603,7 +570,7 @@ class RBT {
           s.nodeColor = x.parentPointer.nodeColor;
           x.parentPointer.nodeColor = 0;
           s.leftPointer.nodeColor = 0;
-          rightRotate(x.parentPointer);
+          rotate_right(x.parentPointer);
           x = root;
         }
       } 
@@ -612,7 +579,7 @@ class RBT {
   }
 
 
-  private void rbTransplant(Node u, Node v){
+  private void treeTransplant(Node u, Node v){
     if (u.parentPointer == null) {
       root = v;
     } else if (u == u.parentPointer.leftPointer){
@@ -623,12 +590,11 @@ class RBT {
     v.parentPointer = u.parentPointer;
   }
 
-  private void deleteNodeUtil(Node node, int key) {
+  private void deleteKeyNode(Node node, int key) {
     // find the node containing key
-    Node z = Ext;
+    Node z = ExternalNode;
     Node x, y;
-    while (node != Ext){
-      //System.out.println("hey");
+    while (node != ExternalNode){
       if (node.buildingNum == key) {
         z = node;
       }
@@ -640,46 +606,46 @@ class RBT {
       }
     }
 
-    if (z == Ext) {
+    if (z == ExternalNode) {
       System.out.println("Couldn't find key in the tree");
       return;
     } 
 
     y = z;
     int yOriginalColor = y.nodeColor;
-    if (z.leftPointer == Ext) {
+    if (z.leftPointer == ExternalNode) {
       x = z.rightPointer;
-      rbTransplant(z, z.rightPointer);
-    } else if (z.rightPointer == Ext) {
+      treeTransplant(z, z.rightPointer);
+    } else if (z.rightPointer == ExternalNode) {
       x = z.leftPointer;
-      rbTransplant(z, z.leftPointer);
+      treeTransplant(z, z.leftPointer);
     } 
     else {
-      y = minimum(z.rightPointer);
+      y = minKey(z.rightPointer);
       yOriginalColor = y.nodeColor;
       x = y.rightPointer;
       if (y.parentPointer == z) {
         x.parentPointer = y;
       } else {
-        rbTransplant(y, y.rightPointer);
+        treeTransplant(y, y.rightPointer);
         y.rightPointer = z.rightPointer;
         y.rightPointer.parentPointer = y;
       }
 
-      rbTransplant(z, y);
+      treeTransplant(z, y);
       y.leftPointer = z.leftPointer;
       y.leftPointer.parentPointer = y;
       y.nodeColor = z.nodeColor;
     }
     if (yOriginalColor == 0){
-      fixDelete(x);
+      Deleter(x);
     }
   }
 
 
   
   // fix the red-black tree
-  private void fixInsert(Node k){
+  private void inserter(Node k){
     Node u;
     while (k.parentPointer.nodeColor == 1) {
       if (k.parentPointer == k.parentPointer.parentPointer.rightPointer) {
@@ -694,7 +660,7 @@ class RBT {
           if (k == k.parentPointer.leftPointer) {
             // case 3.2.2
             k = k.parentPointer;
-            rightRotate(k);
+            rotate_right(k);
           }
           // case 3.2.1
           k.parentPointer.nodeColor = 0;
@@ -719,7 +685,7 @@ class RBT {
           // mirror case 3.2.1
           k.parentPointer.nodeColor = 0;
           k.parentPointer.parentPointer.nodeColor = 1;
-          rightRotate(k.parentPointer.parentPointer);
+          rotate_right(k.parentPointer.parentPointer);
         }
       }
       if (k == root) {
@@ -729,11 +695,11 @@ class RBT {
     root.nodeColor = 0;
   }
 
-  private void printHelper(Node root, String indent, boolean last) {
+  private void printToScreen(Node root, String indent, boolean end) {
     // print the tree structure on the screen
-      if (root != Ext) {
+      if (root != ExternalNode) {
        System.out.print(indent);
-       if (last) {
+       if (end) {
           System.out.print("R----");
           indent += "     ";
        } else {
@@ -741,19 +707,16 @@ class RBT {
           indent += "|    ";
        }
             
-           String sColor = root.nodeColor == 1?"RED":"BLACK";
+       String sColor = root.nodeColor == 1?"RED":"BLACK";
        System.out.println(root.buildingNum+" "+root.total_time+" "+root.execution_time + "(" + sColor + ")");
-       printHelper(root.leftPointer, indent, false);
-       printHelper(root.rightPointer, indent, true);
+       printToScreen(root.leftPointer, indent, false);
+       printToScreen(root.rightPointer, indent, true);
     }
   }
-
-
   
-  
-  // find the node with the minimum key
-  public Node minimum(Node node) {
-    while (node.leftPointer != Ext) {
+  // find the node with the minKey key
+  public Node minKey(Node node) {
+    while (node.leftPointer != ExternalNode) {
       node = node.leftPointer;
     }
     return node;
@@ -761,7 +724,7 @@ class RBT {
 
   // find the node with the maximum key
   public Node maximum(Node node) {
-    while (node.rightPointer != Ext) {
+    while (node.rightPointer != ExternalNode) {
       node = node.rightPointer;
     }
     return node;
@@ -772,14 +735,14 @@ class RBT {
     // if the rightPointer subtree is not null,
     // the successor is the leftmost node in the
     // rightPointer subtree
-    if (x.rightPointer != Ext) {
-      return minimum(x.rightPointer);
+    if (x.rightPointer != ExternalNode) {
+      return minKey(x.rightPointer);
     }
 
     // else it is the lowest ancestor of x whose
     // leftPointer child is also an ancestor of x.
     Node y = x.parentPointer;
-    while (y != Ext && x == y.rightPointer) {
+    while (y != ExternalNode && x == y.rightPointer) {
       x = y;
       y = y.parentPointer;
     }
@@ -793,7 +756,7 @@ class RBT {
   public void leftRotate(Node x) {
     Node y = x.rightPointer;
     x.rightPointer = y.leftPointer;
-    if (y.leftPointer != Ext) {
+    if (y.leftPointer != ExternalNode) {
       y.leftPointer.parentPointer = x;
     }
     y.parentPointer = x.parentPointer;
@@ -809,10 +772,10 @@ class RBT {
   }
 
   // rotate rightPointer at node x
-  public void rightRotate(Node x) {
+  public void rotate_right(Node x) {
     Node y = x.leftPointer;
     x.leftPointer = y.rightPointer;
-    if (y.rightPointer != Ext) {
+    if (y.rightPointer != ExternalNode) {
       y.rightPointer.parentPointer = x;
     }
     y.parentPointer = x.parentPointer;
@@ -834,8 +797,8 @@ class RBT {
     
     
     node.execution_time=0;
-    node.leftPointer=Ext;
-    node.rightPointer=Ext;
+    node.leftPointer=ExternalNode;
+    node.rightPointer=ExternalNode;
     node.parentPointer=null;
     node.nodeColor=1;
     
@@ -844,7 +807,7 @@ class RBT {
     Node y = null;
     Node x = this.root;
 
-    while (x != Ext) {
+    while (x != ExternalNode) {
       y = x;
       if (node.buildingNum < x.buildingNum) {
         x = x.leftPointer;
@@ -875,14 +838,14 @@ class RBT {
     }
 
     // Fix the tree
-    fixInsert(node);
+    inserter(node);
   }
 
   
 
   // delete the node from the tree
-  public void deleteNode(int buildingNum) {
-    deleteNodeUtil(this.root, buildingNum);
+  public void nodeDelete(int buildingNum) {
+    deleteKeyNode(this.root, buildingNum);
   }
 
   // print the tree structure on the screen
@@ -907,7 +870,7 @@ class RBT {
     Node cur=root;
     while(cur!=null){
       if(cur.buildingNum>=x && cur.buildingNum<=y){
-        recurPrint(cur,x,y);
+        printAll(cur,x,y);
         System.out.println();
         return;
       }
@@ -920,49 +883,43 @@ class RBT {
     }
   }
 
-  void recurPrint(Node cur,int x,int y){
-    if(cur==Ext ) return;
+  void printAll(Node cur,int x,int y){
+    if(cur==ExternalNode ) return;
 
     if(cur.buildingNum==x){
-      recurPrint(cur.rightPointer,x,y);
+      printAll(cur.rightPointer,x,y);
       System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
     }
     else if(cur.buildingNum==y){
-      recurPrint(cur.leftPointer,x,y);
+      printAll(cur.leftPointer,x,y);
       System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
     
     }
     else
     {
-      if(cur.leftPointer!=Ext && inRange( cur.leftPointer.buildingNum, x,y)){
-      recurPrint(cur.leftPointer,x,y);
+      if(cur.leftPointer!=ExternalNode && checkRange( cur.leftPointer.buildingNum, x,y)){
+      printAll(cur.leftPointer,x,y);
       } 
       System.out.print("("+cur.buildingNum+" "+ cur.execution_time+" "+ cur.total_time+") ");
-      if(cur.rightPointer!=Ext && inRange(cur.rightPointer.buildingNum,x,y))
-        recurPrint(cur.rightPointer,x,y);
+      if(cur.rightPointer!=ExternalNode && checkRange(cur.rightPointer.buildingNum,x,y))
+        printAll(cur.rightPointer,x,y);
     }
   }
 
-  boolean inRange(int target,int l,int heap){
+  boolean checkRange(int target,int l,int heap){
     if(target>=l && target<=heap)
       return true;
     return false;
   }
 
   public RBT() {
-    Ext = new Node();
-    Ext.buildingNum=-1;
-    Ext.nodeColor = 0;
-    Ext.leftPointer = null;
-    Ext.rightPointer = null;
-    root = Ext;
+    ExternalNode = new Node();
+    ExternalNode.buildingNum=-1;
+    ExternalNode.nodeColor = 0;
+    ExternalNode.leftPointer = null;
+    ExternalNode.rightPointer = null;
+    root = ExternalNode;
   }
-
-
-
-
-
-  
 }
 
 
